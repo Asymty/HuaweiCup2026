@@ -1,0 +1,24 @@
+\documentclass[bwprint]{gmcmthesis}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\numberwithin{figure}{section}
+\renewcommand{\thefigure}{\arabic{section}-\arabic{figure}}
+% \documentclass[withoutpreface,bwprint]{cumcmthesis}
+% 去掉封面与编号页
+
+\title{中国研究生数学建模竞赛论文标题}
+\baominghao{No.00000001} %参赛队号
+\schoolname{XX大学/学院}%学校名称
+\membera{队员A} %队员A
+\memberb{队员B} %队员B
+\memberc{队员C} %队员C
+\begin{document}
+ \maketitle
+\input{sections/abstract}
+
+%\pagestyle{plain}
+
+% 官方 2026 规范要求摘要页的下一页直接开始论文正文。
+\input{body_content}
+
+\end{document}

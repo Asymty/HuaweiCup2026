@@ -1,0 +1,15 @@
+\documentclass[withoutpreface,bwprint]{gmcmthesis}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+\numberwithin{figure}{section}
+\renewcommand{\thefigure}{\arabic{section}-\arabic{figure}}
+
+% 正文起始页码：
+% 封面 + 1 页摘要时设为 2；封面 + 2 页摘要时设为 3。
+% 最终只需修改下面这一个数字。
+\newcommand{\BodyStartPage}{2}
+
+\begin{document}
+\setcounter{page}{\BodyStartPage}
+\input{body_content}
+\end{document}
