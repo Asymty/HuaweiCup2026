@@ -46,6 +46,10 @@ Git 管理：
 
 这些内容主要通过 Google Drive 或本地文件协作。不要因为 Git 中看不到它们就删除、重建或覆盖本地对应内容。
 
+## 论文写作 Skill
+
+任何 Codex 在新增或大幅修改论文正文前，必须先读取 `skill/paper_writing/README.md`，再读取当前章节对应指南：模型读 `model_writing.md`，实验读 `experiment_results.md`，摘要读 `abstract.md`，图表读 `figures_tables.md`；所有数值、模型与结论必须来自实际代码、正式结果和当前论文上下文。
+
 ## 修改代码前
 
 先阅读与任务直接相关的文件，不要根据文件名猜实现。
