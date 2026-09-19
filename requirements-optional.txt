@@ -1,0 +1,10 @@
+# 旧版 Excel（.xls）读取
+xlrd
+
+# Parquet 读取
+pyarrow
+
+# 赛题可能使用的扩展模型、图论和优化工具
+xgboost
+networkx
+pulp

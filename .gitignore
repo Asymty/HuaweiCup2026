@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDEs
+.idea/
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Large raw data (uncomment to ignore competition inputs)
+data/raw/
+data/processed/
+data/external/
+
+# Generated experiment artifacts
+result/
+figures/draft/
+paper/working/
+paper/backup/
+
+# Competition data, generated outputs, papers, and reference materials
+data/
+figures/
+paper/
+references/
+
+# Logs and temporary directories
+*.log
+tmp/
+temp/
