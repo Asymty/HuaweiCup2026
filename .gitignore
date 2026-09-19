@@ -34,10 +34,35 @@ paper/backup/
 # Competition data, generated outputs, papers, and reference materials
 data/
 figures/
-paper/
+paper/*
+!paper/Latex/
+!paper/Latex/**
 references/
 
 # Logs and temporary directories
 *.log
 tmp/
 temp/
+# LaTeX intermediate files and generated main PDF
+*.aux
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+/paper/Latex/MathModel.pdf
+# Re-ignore local metadata and an accidental local build directory after LaTeX re-inclusion
+**/.DS_Store
+/paper/Latex/$out/
+# Hybrid Word + LaTeX generated PDFs
+/paper/Latex/BodyOnly.pdf
+/paper/Latex/FinalPaper.pdf
+/paper/Latex/frontmatter/frontmatter.pdf
+/paper/Latex/frontmatter/*.doc*

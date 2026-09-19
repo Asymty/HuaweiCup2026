@@ -10,7 +10,7 @@
 8. PR 合并前检查 label 是否重复，且所有 `\ref`、`\cite` 均可解析。
 9. 禁止通过复制粘贴制造重复章节；新增内容应写入唯一的责任文件。
 10. 论文中的数值、图表和结论必须与代码输出及正式实验结果一致。
-11. 新增或大幅修改正文前，必须先读取 `skill/paper_writing/README.md` 及对应章节指南：模型读取 `model_writing.md`，实验读取 `experiment_results.md`，摘要读取 `abstract.md`，图表读取 `figures_tables.md`。
+11. 新增或大幅修改正文前，必须先读取 `skill/paper_writing/README.md` 及当前任务对应指南：模型写作读取 `skill/paper_writing/model_writing.md`，实验结果读取 `skill/paper_writing/experiment_results.md`，图表读取 `skill/paper_writing/figures_tables.md`，摘要读取 `skill/paper_writing/abstract.md`，全文审查读取 `skill/paper_writing/final_review.md`。
 
 ## 建议边界
 
