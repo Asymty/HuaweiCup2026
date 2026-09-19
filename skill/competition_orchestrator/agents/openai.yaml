@@ -1,0 +1,7 @@
+interface:
+  display_name: "Competition Orchestrator"
+  short_description: "Coordinate three Codex agents for Huawei Cup."
+  default_prompt: "Use $competition-orchestrator to assign the next bounded competition task and define its evidence-based handoff."
+
+policy:
+  allow_implicit_invocation: true
