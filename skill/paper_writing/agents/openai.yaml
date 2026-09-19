@@ -1,0 +1,4 @@
+interface:
+  display_name: "数学建模论文写作"
+  short_description: "基于真实模型与结果撰写和审查华为杯 LaTeX 论文"
+  default_prompt: "Use $paper-writing to draft or review this mathematical-modeling paper section from the actual code, results, and current LaTeX context."
