@@ -6,6 +6,8 @@
 
 详细流程见：`skill/three_codex_workflow.md`。
 
+正式比赛期间，任何 Codex 在接受赛题相关任务前，必须先读取 `skill/competition_orchestrator/SKILL.md`。如果任务涉及论文写作，还必须同时读取 `skill/paper_writing/README.md`。
+
 ## 三个 Codex 的核心协作规则
 
 - 不要默认自己独占仓库。始终假设另外两个 Codex 可能正在并行工作。
