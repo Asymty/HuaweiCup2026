@@ -1,0 +1,2 @@
+Huawei Cup environment test.
+This file is only for GitHub permission verification.
