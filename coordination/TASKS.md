@@ -113,7 +113,7 @@ A 主写 MASTER_PLAN/DECISIONS/TASKS 和 A 模型接口；B 主写预处理、�
 - Completion Criteria: L2 文件与 manifest 可读且哈希一致，必要 L3 位置真实可定位，`EVIDENCE SHARED = PASS`；A 可抽查 Q2 pair、Q3 pair 和 boundary；C 状态页记录路径与 PR。不重跑旧实验。
 - Handoff Target: Codex A 正式验收 TASK-C-01；Codex B 可只读对齐 runner 字段。
 
-## TASK-A-02（下一阶段候选；当前不得执行）
+## TASK-A-02（Phase 2；依赖已满足，可启动）
 
 - Owner: Codex A
 - Priority: P1
@@ -129,7 +129,7 @@ A 主写 MASTER_PLAN/DECISIONS/TASKS 和 A 模型接口；B 主写预处理、�
 - Completion Criteria: 方案规范足够让 B/C 独立执行与证伪；明确停止条件、风险及 `EVIDENCE SHARED = PASS`（文档、来源和审核记录进入本任务 L2）；A 状态页与 handoff 完整。
 - Handoff Target: Codex B 实现与测量、Codex C 独立验证。
 
-## TASK-B-02（下一阶段候选；当前不得执行）
+## TASK-B-02（Phase 2；依赖已满足，可启动）
 
 - Owner: Codex B
 - Priority: P1
@@ -145,7 +145,7 @@ A 主写 MASTER_PLAN/DECISIONS/TASKS 和 A 模型接口；B 主写预处理、�
 - Completion Criteria: 新字段、预算和异常路径可复现，L2 有小型 manifest/记录及必要 L3 位置，`EVIDENCE SHARED = PASS`；无正式全量运行。
 - Handoff Target: Codex A 评估算法预算、Codex C 独立核查字段。
 
-## TASK-C-02（下一阶段候选；当前不得执行）
+## TASK-C-02（Phase 2；依赖已满足，可启动）
 
 - Owner: Codex C
 - Priority: P1
