@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "task_id": "TASK-C-02",
+  "phase": "phase2",
+  "evidence_shared": "PASS",
+  "created_at_utc": "2026-09-23T07:05:03Z",
+  "base_main_commit": "dd5d70ae7f6c36b65b7cee2dc700f6b9c5d29314",
+  "scope": {
+    "acceptance_matrix": "C-01 accepted L2 evidence plus falsifiable mutations",
+    "official_validation": "one minimal graph through unmodified Q1/Q2/Q3 evaluators",
+    "formal_full_experiment": false,
+    "c01_suite_rerun": false
+  },
+  "implementation": [
+    {
+      "path": "src/evaluate/a_metric_audit.py",
+      "sha256": "7832366a557fe2ce7e95167f57bd8abd0a307ab0e986b8270b4c9a9cf9bee1d7",
+      "size_bytes": 46079
+    },
+    {
+      "path": "tests/test_a_metric_audit.py",
+      "sha256": "3ba065d4fb145a1366b79a7f068946553ab9a98a97bb11075cd49dfdf36bb231",
+      "size_bytes": 9547
+    }
+  ],
+  "phase1_sources": [
+    {
+      "path": "shared_evidence/phase1/task_c_01/evidence_manifest.json",
+      "sha256": "11b12e88ba8209ce1d64f023f59330e2b9286519f809f5eca412a3714c6e7adb"
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q2_mechanism.json",
+      "sha256": "1390b60c4ab6f275f885a60e2073e2f70db8f825d6390cbcd341f2e460ae29a7"
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q3_mechanism.json",
+      "sha256": "9082eaae76602df20cefaf246faa2fae2d4cfc4fe38aa42712d2cb2472d69414"
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q3_boundary.json",
+      "sha256": "47f0f0e4a8145c889d5c6a2079c2d8f19b276363fcb884a5ee3579ba92dd8d66"
+    }
+  ],
+  "official_inputs": {
+    "actual_local_root": "A题/通用神经网络处理器下的多核调度问题  附件/",
+    "read_only": true,
+    "sha256": {
+      "code/multicore_cut_evaluate_problem_1.py": "2095f188a6c24ce3899f156bef21d50dcd87cbd9368488046b1e77e2bf91af3f",
+      "code/multicore_cut_evaluate_problem_2.py": "0b39f84d5ec0a7fba9a4c92a598a9044b97ab79c71393824c1ba130ecfe6c464",
+      "code/multicore_cut_evaluate_problem_3.py": "eab1504dead881f4b67c0f0498cbc2dbbd9039dc3c9d198c6af58773c127eeb0",
+      "data/config.txt": "dcd10de54b23f8366428fb24e828812b1da9549e6eae4a3c3f38604fe5ae77b9"
+    }
+  },
+  "commands": {
+    "generate_raw": ".\\.venv\\Scripts\\python.exe src\\evaluate\\a_metric_audit.py --acceptance-evidence-dir shared_evidence\\phase1\\task_c_01 --official-minimal-check --official-root \"<official-root>\" --output-dir result\\a_validation_prototype",
+    "unit_tests_without_official": ".\\.venv\\Scripts\\python.exe tests\\test_a_metric_audit.py",
+    "targeted_official_check": ".\\.venv\\Scripts\\python.exe -m unittest tests.test_a_metric_audit.MetricAuditTests.test_official_minimal_acceptance_check -v",
+    "compileall": ".\\.venv\\Scripts\\python.exe -m compileall src tests main.py",
+    "smoke": ".\\.venv\\Scripts\\python.exe tests\\smoke_test.py",
+    "legality_tests": ".\\.venv\\Scripts\\python.exe tests\\test_a_legality.py",
+    "diff_check": "git diff --check"
+  },
+  "validation": {
+    "acceptance_matrix": "PASS; 6/6 expected PASS/WARN/FAIL verdicts matched",
+    "official_minimal_check": "PASS; Q1/Q2/Q3 same-plan records each Makespan 3 and added COPY 0",
+    "metric_tests_without_official": "PASS; 12 tests, 2 intentionally skipped official tests",
+    "targeted_official_test": "PASS; 1 test",
+    "legality_tests": "PASS; 8 tests",
+    "compileall": "PASS",
+    "smoke_test": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "raw_outputs": [
+    {
+      "path": "result/a_validation_prototype/acceptance_matrix.json",
+      "sha256": "5c70f8e2faedd8aecf5ef2e4b5f08b637efce61ff1bf5142130b57e0a68b5c8f",
+      "size_bytes": 6548
+    },
+    {
+      "path": "result/a_validation_prototype/official_minimal_check.json",
+      "sha256": "1e2bea95085d941108c2eb18b9ee91af84cc060a174fd33cf29208f5482f4fe6",
+      "size_bytes": 5017
+    }
+  ],
+  "l2_files": [
+    {
+      "path": "shared_evidence/phase2/task_c_02/README.md",
+      "sha256": "f91a36bc394823dcbf742afad505bb98289bc0c9a5d74a48192be31c7635fb9c",
+      "size_bytes": 2301
+    },
+    {
+      "path": "shared_evidence/phase2/task_c_02/acceptance_matrix.json",
+      "sha256": "4674a69ffeca6be2bb6d329f56d8bedb587db96ba017fc89b58e8212d0eb5bcb",
+      "size_bytes": 2296
+    },
+    {
+      "path": "shared_evidence/phase2/task_c_02/official_minimal_check.json",
+      "sha256": "4e6637eecfcad3c29296df9db15cd54752761429d6dea0f050858ac05473dda0",
+      "size_bytes": 1774
+    }
+  ],
+  "l3": {
+    "provider": "Google Drive for desktop shared shortcut target",
+    "logical_path": "Google Drive / 04_Results / Phase2 / TASK-C-02 /",
+    "local_sync_path": "G:/.shortcut-targets-by-id/1A2sgFCDpS1YiCptPPK52xN8mek3fY5C5/HuaweiCup2026/04_Results/Phase2/TASK-C-02/",
+    "folder_url": null,
+    "files": [
+      {
+        "name": "acceptance_matrix.json",
+        "sha256": "5c70f8e2faedd8aecf5ef2e4b5f08b637efce61ff1bf5142130b57e0a68b5c8f",
+        "size_bytes": 6548
+      },
+      {
+        "name": "official_minimal_check.json",
+        "sha256": "1e2bea95085d941108c2eb18b9ee91af84cc060a174fd33cf29208f5482f4fe6",
+        "size_bytes": 5017
+      }
+    ],
+    "verification": "Both files were read back from the shared Phase2 target and matched their source SHA-256."
+  },
+  "manifest_note": "This manifest intentionally omits its own hash and the TASK-C-02 evidence commit to avoid self-reference."
+}

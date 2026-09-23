@@ -1,0 +1,52 @@
+{
+  "task_id": "TASK-C-02",
+  "source": "result/a_validation_prototype/official_minimal_check.json",
+  "case_id": "official_minimal_sample",
+  "scope": "one minimal graph through unmodified official evaluators; contract check only",
+  "status": "PASS",
+  "input_sha256": "31b91fa659d05c1b649f7ef5600e5391d1c86fc0d0758cce5d21003e56c9debd",
+  "plan_sha256": "4d32f72194455746b0dd8c51ea516499c0feaafaf9576b0e9e27e375c98db9a3",
+  "config_sha256": "dcd10de54b23f8366428fb24e828812b1da9549e6eae4a3c3f38604fe5ae77b9",
+  "official_script_sha256": {
+    "multicore_cut_evaluate_problem_1.py": "2095f188a6c24ce3899f156bef21d50dcd87cbd9368488046b1e77e2bf91af3f",
+    "multicore_cut_evaluate_problem_2.py": "0b39f84d5ec0a7fba9a4c92a598a9044b97ab79c71393824c1ba130ecfe6c464",
+    "multicore_cut_evaluate_problem_3.py": "eab1504dead881f4b67c0f0498cbc2dbbd9039dc3c9d198c6af58773c127eeb0"
+  },
+  "records": {
+    "1": {
+      "makespan": 3,
+      "original_graph_copy_bytes": 64,
+      "scheduled_copy_bytes": 64,
+      "added_copy_bytes": 0,
+      "physical_ddr_bytes": 64,
+      "cache_hit_bytes": 0,
+      "metric_audit": "PASS"
+    },
+    "2": {
+      "makespan": 3,
+      "original_graph_copy_bytes": 64,
+      "scheduled_copy_bytes": 64,
+      "added_copy_bytes": 0,
+      "physical_ddr_bytes": 64,
+      "cache_hit_bytes": 0,
+      "metric_audit": "PASS"
+    },
+    "3": {
+      "makespan": 3,
+      "original_graph_copy_bytes": 64,
+      "scheduled_copy_bytes": 64,
+      "added_copy_bytes": 0,
+      "physical_ddr_bytes": 64,
+      "cache_hit_bytes": 0,
+      "cache_miss_bytes": 32,
+      "cache_total_bytes": 32,
+      "cache_hit_rate": 0.0,
+      "metric_audit": "PASS"
+    }
+  },
+  "pair_audits": {
+    "q1_q2": "PASS",
+    "q2_q3": "PASS"
+  },
+  "performance_claim": "none"
+}
