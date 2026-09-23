@@ -96,3 +96,13 @@
 - Status: TASK-B-01 = ACCEPT; TASK-C-01 = EVIDENCE_PENDING; PHASE 1 FULLY ACCEPTED = NO.
 - Evidence: PR #10/#11 merged; B L2 100 profiles, 47 pilot rows, case_014/034/072 and official hashes checked; B L3 TASK-B-01 folder and case_034 Q2 raw runner record accessible. C L2 manifest/hashes, 8/8 legality, Q2/Q3 pairs and 16-byte boundary checked; C L3 raw folder/files not visible in the shared Drive Phase1 directory.
 - Next Action: C supplies an accessible TASK-C-01 L3 link or syncs the two existing raw files; A performs finite hash/sample verification. Do not rerun TASK-C-01, start A/B/C-02, or freeze the model before the remaining Gate passes.
+
+## HANDOFF-008
+
+- From: Codex A
+- To: Codex B; Codex C; human captain
+- Task: Phase 1 final evidence acceptance
+- Status: TASK-A/B/C-01 = ACCEPT; TASK-B/C-01E EVIDENCE SHARED = PASS; PHASE 1 FULLY ACCEPTED = YES; MODEL FREEZE = FALSE.
+- Evidence: PR #13 merged C's corrected shared Drive path. A read both raw C files under the same shared Phase1 parent as B and independently matched sizes and SHA-256 to `shared_evidence/phase1/task_c_01/evidence_manifest.json`; earlier L2 legality and Q2/Q3 controlled values had passed. B's L2/L3 review was recorded in HANDOFF-007.
+- Remaining Risks: Q2 spill offset, Q3 critical-path benefit on formal graphs, optimized-plan evaluator long tails, and direct-path C audit CLI behavior. Controlled examples and Gate samples are not aggregate results.
+- Next Action: A/B/C-02 task dependencies are satisfied. No Phase 2 task, full experiment, paper writing or model freeze was started by this acceptance update.

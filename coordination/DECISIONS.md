@@ -34,3 +34,10 @@
 - Decision: PR #10/#11 已合并。TASK-B-01E 的 L2/L3 可定位并经有限独立抽查，TASK-B-01 正式 ACCEPT。TASK-C-01E 的 L2 内容及哈希通过，但声明的 L3 原始文件在当前可访问的团队 Drive 未定位；TASK-C-01 仍为 EVIDENCE_PENDING，Phase 1 FULLY ACCEPTED = NO，A/B/C-02 不启动。
 - Evidence: `shared_evidence/phase1/task_b_01/` 的 100 图、47 条 pilot 和共享 Drive 原始 case_034 Q2 记录；`shared_evidence/phase1/task_c_01/` 的 8/8 legality、Q2/Q3 对照及边界。A 仅抽样审核既有证据，未重跑 B/C 第一轮实验。
 - Next: C 提供团队可访问的 L3 链接或同步原有两份文件；A 对照 manifest 抽查后再决定 C 正式验收。MODEL FREEZE = FALSE。
+
+## DECISION-004：Phase 1 正式验收通过
+
+- Date: 2026-09-23
+- Decision: TASK-C-01E 的共享 L3 两份原始文件已由 A 独立读取并核对大小、SHA-256；其修正 manifest 经 PR #13 合并。TASK-C-01 正式 ACCEPT；连同既有 TASK-A/B-01 ACCEPT，PHASE 1 FULLY ACCEPTED = YES，RISK-006 CLOSED。TASK-A/B/C-02 的证据 Gate 依赖已满足，本次未启动下一阶段任务。MODEL FREEZE = FALSE。
+- Evidence: 团队共享 [TASK-C-01 L3 目录](https://drive.google.com/drive/folders/1hTQdO02EM8tjuvZBrwdqs507673F_XAG)；`official_validation_evidence.json` SHA-256 `a26d60a75f4bd05ce4c2c96f563ab509a16d60aca4cee4f43df0a997b49e2641`，`TASK-C-01_REPORT.md` SHA-256 `d01214c86f6cf95b05302514d62831fb6859138829065ed740c95100cc14d8f1`；L2 8/8 legality、Q2/Q3 受控对照和边界已在前次审查核对。
+- Boundary: 这是 Phase 1 证据与技术验收，不构成正式 100 图性能结论、模型冻结或大规模实验授权；B/C 第一轮实验未重跑。
