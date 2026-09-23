@@ -18,6 +18,11 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
+if __package__ in {None, ""}:
+    project_root = Path(__file__).resolve().parents[2]
+    if str(project_root) not in sys.path:
+        sys.path.insert(0, str(project_root))
+
 from src.evaluate.a_legality import check_execution_graph, check_plan_legality
 
 
@@ -160,6 +165,368 @@ def compare_results(control: Mapping[str, Any], treatment: Mapping[str, Any]) ->
     }
 
 
+def _canonical_sha256(value: Mapping[str, Any]) -> str:
+    payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _compact_metric_audit(record: Mapping[str, Any]) -> dict[str, Any]:
+    """Check a portable run record without requiring a full official timeline."""
+
+    metrics = record.get("metrics")
+    if not isinstance(metrics, Mapping):
+        return {"status": "FAIL", "errors": ["metrics must be an object"]}
+
+    errors: list[str] = []
+    required = [
+        "makespan",
+        "original_graph_copy_bytes",
+        "scheduled_copy_bytes",
+        "added_copy_bytes",
+        "physical_ddr_bytes",
+    ]
+    for name in required:
+        value = metrics.get(name)
+        if not _is_number(value) or value < 0:
+            errors.append(f"{name} must be finite and non-negative")
+
+    if errors:
+        return {"status": "FAIL", "errors": errors}
+
+    original = metrics["original_graph_copy_bytes"]
+    scheduled = metrics["scheduled_copy_bytes"]
+    added = metrics["added_copy_bytes"]
+    physical = metrics["physical_ddr_bytes"]
+    if added != scheduled - original:
+        errors.append(
+            f"added_copy_bytes mismatch: reported={added} calculated={scheduled - original}"
+        )
+
+    hit_bytes = metrics.get("cache_hit_bytes", 0)
+    if not _is_number(hit_bytes) or hit_bytes < 0:
+        errors.append("cache_hit_bytes must be finite and non-negative")
+    elif hit_bytes > scheduled:
+        errors.append("cache_hit_bytes cannot exceed scheduled_copy_bytes")
+    elif physical != scheduled - hit_bytes:
+        errors.append(
+            "physical_ddr_bytes mismatch: reported={} calculated={}".format(
+                physical, scheduled - hit_bytes
+            )
+        )
+
+    problem = str(record.get("problem"))
+    if problem == "3":
+        miss_bytes = metrics.get("cache_miss_bytes")
+        total_bytes = metrics.get("cache_total_bytes")
+        hit_rate = metrics.get("cache_hit_rate")
+        if any(
+            not _is_number(value) or value < 0
+            for value in (miss_bytes, total_bytes, hit_rate)
+        ):
+            errors.append("Q3 cache byte counters and hit rate must be finite and non-negative")
+        else:
+            calculated_total = hit_bytes + miss_bytes
+            if total_bytes != calculated_total:
+                errors.append(
+                    f"cache_total_bytes mismatch: reported={total_bytes} calculated={calculated_total}"
+                )
+            calculated_rate = hit_bytes / calculated_total if calculated_total else 0.0
+            if not math.isclose(
+                float(hit_rate), float(calculated_rate), rel_tol=1e-12, abs_tol=1e-12
+            ):
+                errors.append("cache_hit_rate is not byte weighted")
+
+    if metrics.get("metric_audit") not in {None, "PASS"}:
+        errors.append("source metric audit is not PASS")
+    return {"status": "PASS" if not errors else "FAIL", "errors": errors}
+
+
+def audit_candidate_pair(
+    control: Mapping[str, Any],
+    treatment: Mapping[str, Any],
+    *,
+    expected_problems: tuple[int | str, int | str],
+    comparison_mode: str = "mechanism",
+) -> dict[str, Any]:
+    """Apply falsifiable acceptance gates to one candidate comparison.
+
+    ``mechanism`` mode requires the same graph, core count, config, and plan
+    hash.  ``redesign`` mode allows core/plan changes but emits a warning so a
+    gain cannot be attributed to Q2 task merging or Q3 shared L2 alone.
+    """
+
+    if comparison_mode not in {"mechanism", "redesign"}:
+        raise ValueError("comparison_mode must be 'mechanism' or 'redesign'")
+
+    errors: list[str] = []
+    warnings: list[str] = []
+    checks: dict[str, bool] = {}
+
+    expected = tuple(str(value) for value in expected_problems)
+    actual = (str(control.get("problem")), str(treatment.get("problem")))
+    checks["expected_problem_pair"] = actual == expected
+    if not checks["expected_problem_pair"]:
+        errors.append(f"problem pair mismatch: expected={expected} actual={actual}")
+
+    for label, record in (("control", control), ("treatment", treatment)):
+        checks[f"{label}_success"] = record.get("status") == "success"
+        checks[f"{label}_legal"] = record.get("legal") is True
+        if not checks[f"{label}_success"]:
+            errors.append(f"{label} record is not a successful evaluation")
+        if not checks[f"{label}_legal"]:
+            errors.append(f"{label} plan is not independently confirmed legal")
+
+    for field in ("case_id", "input_sha256", "config_sha256"):
+        same = bool(control.get(field)) and control.get(field) == treatment.get(field)
+        checks[f"same_{field}"] = same
+        if not same:
+            errors.append(f"{field} differs or is missing")
+
+    same_cores = (
+        isinstance(control.get("core_count"), int)
+        and control.get("core_count") > 0
+        and control.get("core_count") == treatment.get("core_count")
+    )
+    same_plan = bool(control.get("plan_sha256")) and (
+        control.get("plan_sha256") == treatment.get("plan_sha256")
+    )
+    checks["same_core_count"] = same_cores
+    checks["same_plan_sha256"] = same_plan
+    if comparison_mode == "mechanism":
+        if not same_cores:
+            errors.append("mechanism comparison requires the same core count")
+        if not same_plan:
+            errors.append("mechanism comparison requires the same plan_sha256")
+    elif not same_cores or not same_plan:
+        warnings.append(
+            "core count or plan changed; any gain is a redesign result, not isolated mechanism evidence"
+        )
+
+    control_audit = _compact_metric_audit(control)
+    treatment_audit = _compact_metric_audit(treatment)
+    checks["control_metrics_consistent"] = control_audit["status"] == "PASS"
+    checks["treatment_metrics_consistent"] = treatment_audit["status"] == "PASS"
+    errors.extend(f"control: {item}" for item in control_audit["errors"])
+    errors.extend(f"treatment: {item}" for item in treatment_audit["errors"])
+
+    deltas = None
+    if checks["control_metrics_consistent"] and checks["treatment_metrics_consistent"]:
+        control_metrics = control["metrics"]
+        treatment_metrics = treatment["metrics"]
+        deltas = {
+            "makespan": treatment_metrics["makespan"] - control_metrics["makespan"],
+            "added_copy_bytes": (
+                treatment_metrics["added_copy_bytes"]
+                - control_metrics["added_copy_bytes"]
+            ),
+            "physical_ddr_bytes": (
+                treatment_metrics["physical_ddr_bytes"]
+                - control_metrics["physical_ddr_bytes"]
+            ),
+        }
+
+        if expected == ("2", "3") and comparison_mode == "mechanism":
+            logical_fields = (
+                "original_graph_copy_bytes",
+                "scheduled_copy_bytes",
+                "added_copy_bytes",
+            )
+            same_logical_copy = all(
+                control_metrics[field] == treatment_metrics[field]
+                for field in logical_fields
+            )
+            checks["same_logical_copy_for_q2_q3"] = same_logical_copy
+            if not same_logical_copy:
+                errors.append(
+                    "same-plan Q2/Q3 comparison changed logical COPY fields"
+                )
+            hit_bytes = treatment_metrics.get("cache_hit_bytes", 0)
+            if hit_bytes > 0 and deltas["makespan"] >= 0:
+                warnings.append(
+                    "Cache hit bytes are positive but Makespan did not improve"
+                )
+
+    status = "FAIL" if errors else "WARN" if warnings else "PASS"
+    attribution = (
+        "ISOLATED_MECHANISM"
+        if comparison_mode == "mechanism" and not errors
+        else "REDESIGN_ONLY"
+        if comparison_mode == "redesign" and not errors
+        else "INVALID_COMPARISON"
+    )
+    return {
+        "status": status,
+        "comparison_mode": comparison_mode,
+        "attribution": attribution,
+        "expected_problems": list(expected),
+        "checks": checks,
+        "errors": errors,
+        "warnings": warnings,
+        "deltas": deltas,
+    }
+
+
+def _record_from_metrics(
+    *,
+    case_id: str,
+    problem: int,
+    input_sha256: str,
+    config_sha256: str,
+    core_count: int,
+    plan_sha256: str,
+    metrics: Mapping[str, Any],
+) -> dict[str, Any]:
+    return {
+        "case_id": case_id,
+        "problem": problem,
+        "input_sha256": input_sha256,
+        "config_sha256": config_sha256,
+        "core_count": core_count,
+        "plan_sha256": plan_sha256,
+        "status": "success",
+        "legal": True,
+        "metrics": dict(metrics),
+    }
+
+
+def _l2_metrics(summary: Mapping[str, Any], *, problem: int) -> dict[str, Any]:
+    cache = summary.get("cache") if isinstance(summary.get("cache"), Mapping) else {}
+    return {
+        "makespan": summary["makespan"],
+        "original_graph_copy_bytes": summary.get("original_graph_copy_bytes", 32),
+        "scheduled_copy_bytes": summary["scheduled_copy_bytes"],
+        "added_copy_bytes": summary["added_copy_bytes"],
+        "physical_ddr_bytes": summary["physical_ddr_bytes_recomputed"],
+        "cache_hit_bytes": cache.get("hit_bytes", 0),
+        "cache_miss_bytes": cache.get("miss_bytes", 0),
+        "cache_total_bytes": cache.get("total_bytes", 0),
+        "cache_hit_rate": cache.get("byte_hit_rate", 0.0),
+        "metric_audit": summary.get("metric_audit"),
+        "problem": problem,
+    }
+
+
+def build_acceptance_matrix_from_c01(evidence_dir: str | Path) -> dict[str, Any]:
+    """Build C-02 gates from the accepted, portable C-01 L2 evidence."""
+
+    root = Path(evidence_dir)
+    q2 = json.loads((root / "q2_mechanism.json").read_text(encoding="utf-8"))
+    q3 = json.loads((root / "q3_mechanism.json").read_text(encoding="utf-8"))
+    boundary = json.loads((root / "q3_boundary.json").read_text(encoding="utf-8"))
+    manifest = json.loads((root / "evidence_manifest.json").read_text(encoding="utf-8"))
+    config_sha256 = manifest["official_inputs"]["sha256"]["data/config.txt"]
+
+    graph_6000 = _canonical_sha256(_mechanism_graph(6000))
+    graph_16 = _canonical_sha256(_mechanism_graph(16))
+    same_plan = q2["pairing"]
+    split_plan = q3["pairing"]
+    same_plan_sha256 = _canonical_sha256(
+        {
+            "node_to_subgraph": same_plan["node_to_subgraph"],
+            "core_schedules": same_plan["core_schedules"],
+        }
+    )
+    split_plan_sha256 = _canonical_sha256(
+        {
+            "node_to_subgraph": split_plan["node_to_subgraph"],
+            "core_schedules": split_plan["core_schedules"],
+        }
+    )
+
+    q1_same = _record_from_metrics(
+        case_id="c01_controlled_6000",
+        problem=1,
+        input_sha256=graph_6000,
+        config_sha256=config_sha256,
+        core_count=2,
+        plan_sha256=same_plan_sha256,
+        metrics=_l2_metrics(q2["control_q1_multiple_tasks_same_core"], problem=1),
+    )
+    q2_same = _record_from_metrics(
+        case_id="c01_controlled_6000",
+        problem=2,
+        input_sha256=graph_6000,
+        config_sha256=config_sha256,
+        core_count=2,
+        plan_sha256=same_plan_sha256,
+        metrics=_l2_metrics(q2["treatment_q2_merged_task_same_core"], problem=2),
+    )
+    q2_split = _record_from_metrics(
+        case_id="c01_controlled_6000",
+        problem=2,
+        input_sha256=graph_6000,
+        config_sha256=config_sha256,
+        core_count=2,
+        plan_sha256=split_plan_sha256,
+        metrics=_l2_metrics(q3["control_q2_split_no_l2"], problem=2),
+    )
+    q3_split = _record_from_metrics(
+        case_id="c01_controlled_6000",
+        problem=3,
+        input_sha256=graph_6000,
+        config_sha256=config_sha256,
+        core_count=2,
+        plan_sha256=split_plan_sha256,
+        metrics=_l2_metrics(q3["treatment_q3_split_with_l2"], problem=3),
+    )
+    q2_tiny = _record_from_metrics(
+        case_id="c01_boundary_16",
+        problem=2,
+        input_sha256=graph_16,
+        config_sha256=config_sha256,
+        core_count=2,
+        plan_sha256=split_plan_sha256,
+        metrics=_l2_metrics(boundary["control_q2_no_l2"], problem=2),
+    )
+    q3_tiny = _record_from_metrics(
+        case_id="c01_boundary_16",
+        problem=3,
+        input_sha256=graph_16,
+        config_sha256=config_sha256,
+        core_count=2,
+        plan_sha256=split_plan_sha256,
+        metrics=_l2_metrics(boundary["treatment_q3_with_l2"], problem=3),
+    )
+
+    mismatch_plan = deepcopy(q2_same)
+    mismatch_plan["plan_sha256"] = "0" * 64
+    anomalous_metric = deepcopy(q3_split)
+    anomalous_metric["metrics"]["physical_ddr_bytes"] += 1
+    redesigned = deepcopy(q3_split)
+    redesigned["plan_sha256"] = "f" * 64
+
+    specifications = [
+        ("same_plan_q1_q2", q1_same, q2_same, (1, 2), "mechanism", "PASS"),
+        ("same_plan_q2_q3", q2_split, q3_split, (2, 3), "mechanism", "PASS"),
+        ("q3_hit_without_gain", q2_tiny, q3_tiny, (2, 3), "mechanism", "WARN"),
+        ("mismatched_plan_hash", q1_same, mismatch_plan, (1, 2), "mechanism", "FAIL"),
+        ("anomalous_physical_ddr", q2_split, anomalous_metric, (2, 3), "mechanism", "FAIL"),
+        ("redesigned_plan", q2_split, redesigned, (2, 3), "redesign", "WARN"),
+    ]
+    rows = []
+    for name, control, treatment, problems, mode, expected_status in specifications:
+        audit = audit_candidate_pair(
+            control,
+            treatment,
+            expected_problems=problems,
+            comparison_mode=mode,
+        )
+        rows.append(
+            {
+                "case": name,
+                "expected_status": expected_status,
+                "verdict_matches": audit["status"] == expected_status,
+                "audit": audit,
+            }
+        )
+    return {
+        "task_id": "TASK-C-02",
+        "source": str(root.as_posix()),
+        "status": "PASS" if all(row["verdict_matches"] for row in rows) else "FAIL",
+        "rows": rows,
+    }
+
+
 def _mechanism_graph(tensor_size: int = 6000) -> dict[str, Any]:
     """Two dependent vector ops sharing one graph input.
 
@@ -251,6 +618,118 @@ def _load_official_modules(official_root: Path) -> tuple[Path, Any, Any, Any, An
         if sys.path and sys.path[0] == str(code_dir):
             sys.path.pop(0)
     return code_dir, stub, q1, q2, q3
+
+
+def _compact_official_metrics(result: Mapping[str, Any], *, problem: int) -> dict[str, Any]:
+    audit = audit_result(result)
+    movement = result["data_movement_bytes"]
+    cache = result.get("cache_stats", {})
+    cache_calc = audit["cache_recomputed"] or {
+        "total_bytes": 0,
+        "hit_rate": 0.0,
+    }
+    return {
+        "makespan": result["makespan"],
+        "original_graph_copy_bytes": movement["original_graph_copy_bytes"],
+        "scheduled_copy_bytes": movement["scheduled_copy_bytes"],
+        "added_copy_bytes": movement["added_copy_bytes"],
+        "physical_ddr_bytes": audit["recomputed_physical_ddr_bytes"],
+        "cache_hit_bytes": cache.get("hit_bytes", 0),
+        "cache_miss_bytes": cache.get("miss_bytes", 0),
+        "cache_total_bytes": cache_calc["total_bytes"],
+        "cache_hit_rate": cache_calc["hit_rate"],
+        "metric_audit": audit["status"],
+        "problem": problem,
+    }
+
+
+def run_official_minimal_acceptance_check(official_root: str | Path) -> dict[str, Any]:
+    """Run one minimal interface-contract graph through official Q1/Q2/Q3.
+
+    This is a contract check for C-02, not a rerun of the C-01 mechanism suite
+    and not a formal performance experiment.
+    """
+
+    root = Path(official_root).resolve()
+    code_dir, _, q1, q2, q3 = _load_official_modules(root)
+    graph = {
+        "tensors": [
+            {"id": 1, "pos": "DDR", "size": 32},
+            {"id": 2, "pos": "UB", "size": 32},
+            {"id": 3, "pos": "UB", "size": 32},
+            {"id": 4, "pos": "DDR", "size": 32},
+        ],
+        "ops": [
+            {"id": 10, "op": "COPY_IN", "pipe": "PIPE_MTE2", "cycles": 1},
+            {"id": 11, "op": "ADD", "pipe": "PIPE_V", "cycles": 1},
+            {"id": 12, "op": "COPY_OUT", "pipe": "PIPE_MTE3", "cycles": 1},
+        ],
+        "edges": [
+            {"source": 1, "target": 10},
+            {"source": 10, "target": 2},
+            {"source": 2, "target": 11},
+            {"source": 11, "target": 3},
+            {"source": 3, "target": 12},
+            {"source": 12, "target": 4},
+        ],
+    }
+    plan = {
+        "node_to_subgraph": {"11": 0},
+        "core_schedules": [[0], []],
+    }
+    capacity = {"L1": 524288, "UB": 131072}
+    legality = check_plan_legality(graph, plan, problem=1)
+    if not legality.legal:
+        raise ValueError(f"official minimal plan failed independent legality: {legality.to_dict()}")
+
+    results = {
+        1: q1.evaluate_scene_a(graph, plan, 60, capacity, 1000, 100),
+        2: q2.evaluate_scene_b(graph, plan, 60, capacity, 500),
+        3: q3.evaluate_problem_3(graph, plan, 60, capacity, 500, 1048576, 250),
+    }
+    input_sha256 = _canonical_sha256(graph)
+    plan_sha256 = _canonical_sha256(plan)
+    config_path = root / "data" / "config.txt"
+    config_sha256 = _sha256(config_path) if config_path.is_file() else "not_available"
+    records = {
+        problem: _record_from_metrics(
+            case_id="official_minimal_sample",
+            problem=problem,
+            input_sha256=input_sha256,
+            config_sha256=config_sha256,
+            core_count=2,
+            plan_sha256=plan_sha256,
+            metrics=_compact_official_metrics(result, problem=problem),
+        )
+        for problem, result in results.items()
+    }
+    q1_q2 = audit_candidate_pair(
+        records[1], records[2], expected_problems=(1, 2), comparison_mode="mechanism"
+    )
+    q2_q3 = audit_candidate_pair(
+        records[2], records[3], expected_problems=(2, 3), comparison_mode="mechanism"
+    )
+    script_hashes = {
+        name: _sha256(code_dir / name)
+        for name in (
+            "multicore_cut_evaluate_problem_1.py",
+            "multicore_cut_evaluate_problem_2.py",
+            "multicore_cut_evaluate_problem_3.py",
+        )
+    }
+    status = "PASS" if q1_q2["status"] == q2_q3["status"] == "PASS" else "FAIL"
+    return {
+        "task_id": "TASK-C-02",
+        "case_id": "official_minimal_sample",
+        "scope": "one minimal graph through unmodified official evaluators; contract check only",
+        "status": status,
+        "input_sha256": input_sha256,
+        "plan_sha256": plan_sha256,
+        "config_sha256": config_sha256,
+        "official_script_sha256": script_hashes,
+        "records": {str(key): value for key, value in records.items()},
+        "pair_audits": {"q1_q2": q1_q2, "q2_q3": q2_q3},
+    }
 
 
 def run_official_validation_suite(official_root: str | Path) -> dict[str, Any]:
@@ -602,12 +1081,46 @@ def _markdown_report(evidence: Mapping[str, Any]) -> str:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Audit A metrics and Q2/Q3 mechanisms")
-    parser.add_argument("--official-root", required=True, help="official attachment root containing code/")
+    parser.add_argument("--official-root", help="official attachment root containing code/")
     parser.add_argument("--output-dir", default="result/a_validation")
+    parser.add_argument(
+        "--acceptance-evidence-dir",
+        help="accepted C-01 L2 directory used to build the C-02 acceptance matrix",
+    )
+    parser.add_argument(
+        "--official-minimal-check",
+        action="store_true",
+        help="run only the one-graph official-spec contract check",
+    )
     args = parser.parse_args(argv)
-    evidence = run_official_validation_suite(args.official_root)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    generated: dict[str, Mapping[str, Any]] = {}
+    if args.acceptance_evidence_dir:
+        matrix = build_acceptance_matrix_from_c01(args.acceptance_evidence_dir)
+        (output_dir / "acceptance_matrix.json").write_text(
+            json.dumps(matrix, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+        generated["acceptance_matrix"] = matrix
+
+    if args.official_minimal_check:
+        if not args.official_root:
+            parser.error("--official-minimal-check requires --official-root")
+        minimal = run_official_minimal_acceptance_check(args.official_root)
+        (output_dir / "official_minimal_check.json").write_text(
+            json.dumps(minimal, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+        generated["official_minimal_check"] = minimal
+
+    if generated:
+        statuses = {name: item["status"] for name, item in generated.items()}
+        print(json.dumps(statuses, ensure_ascii=False, sort_keys=True))
+        return 0 if all(value == "PASS" for value in statuses.values()) else 1
+
+    if not args.official_root:
+        parser.error("--official-root is required for the legacy C-01 validation suite")
+    evidence = run_official_validation_suite(args.official_root)
     (output_dir / "official_validation_evidence.json").write_text(
         json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
@@ -623,10 +1136,13 @@ if __name__ == "__main__":
 
 
 __all__ = [
+    "audit_candidate_pair",
     "audit_result",
+    "build_acceptance_matrix_from_c01",
     "compare_results",
     "recompute_cache_stats",
     "recompute_data_movement",
     "recompute_makespan",
+    "run_official_minimal_acceptance_check",
     "run_official_validation_suite",
 ]

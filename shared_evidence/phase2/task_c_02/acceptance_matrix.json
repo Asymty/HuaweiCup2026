@@ -1,0 +1,79 @@
+{
+  "task_id": "TASK-C-02",
+  "source": "result/a_validation_prototype/acceptance_matrix.json",
+  "source_evidence": "shared_evidence/phase1/task_c_01",
+  "status": "PASS",
+  "rows": [
+    {
+      "case": "same_plan_q1_q2",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "attribution": "ISOLATED_MECHANISM",
+      "same_input": true,
+      "same_core_count": true,
+      "same_plan_sha256": true,
+      "metrics_consistent": true,
+      "deltas": {
+        "makespan": -400,
+        "added_copy_bytes": -18000,
+        "physical_ddr_bytes": -18000
+      }
+    },
+    {
+      "case": "same_plan_q2_q3",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "attribution": "ISOLATED_MECHANISM",
+      "same_input": true,
+      "same_core_count": true,
+      "same_plan_sha256": true,
+      "same_logical_copy": true,
+      "metrics_consistent": true,
+      "deltas": {
+        "makespan": -76,
+        "added_copy_bytes": 0,
+        "physical_ddr_bytes": -6000
+      }
+    },
+    {
+      "case": "q3_hit_without_gain",
+      "expected_status": "WARN",
+      "actual_status": "WARN",
+      "attribution": "ISOLATED_MECHANISM",
+      "same_plan_sha256": true,
+      "cache_hit_bytes": 16,
+      "deltas": {
+        "makespan": 0,
+        "added_copy_bytes": 0,
+        "physical_ddr_bytes": -16
+      },
+      "warning": "Cache hit bytes are positive but Makespan did not improve"
+    },
+    {
+      "case": "mismatched_plan_hash",
+      "expected_status": "FAIL",
+      "actual_status": "FAIL",
+      "attribution": "INVALID_COMPARISON",
+      "same_plan_sha256": false,
+      "error": "mechanism comparison requires the same plan_sha256"
+    },
+    {
+      "case": "anomalous_physical_ddr",
+      "expected_status": "FAIL",
+      "actual_status": "FAIL",
+      "attribution": "INVALID_COMPARISON",
+      "reported_physical_ddr_bytes": 24001,
+      "recomputed_physical_ddr_bytes": 24000,
+      "error": "physical_ddr_bytes mismatch"
+    },
+    {
+      "case": "redesigned_plan",
+      "expected_status": "WARN",
+      "actual_status": "WARN",
+      "attribution": "REDESIGN_ONLY",
+      "same_plan_sha256": false,
+      "warning": "plan changed; gain is a redesign result, not isolated mechanism evidence"
+    }
+  ],
+  "all_expected_verdicts_matched": true
+}

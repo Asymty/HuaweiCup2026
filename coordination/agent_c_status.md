@@ -1,44 +1,45 @@
 # Codex C Status
 
-- Current Task: TASK-C-01E — portable evidence handoff for TASK-C-01
+- Current Task: TASK-C-02 — falsifiable prototype-candidate acceptance gate
 - Status: DONE
 - Completed:
-  - Implemented an independent structural checker for graph/plan coverage, duplicate integer mapping aliases, unique sgid scheduling, contracted subgraph dependencies, same-core order, Q1 Task-order cycles, and expanded execution-graph cycles.
-  - Independently recomputed Makespan, logical added COPY bytes, Q3 byte hit rate, and physical DDR bytes implied by Cache hits.
-  - Compared eight legality cases (one positive, seven negative) against the unmodified official checker/evaluator; all verdicts matched.
-  - Ran controlled official Q1/Q2 and Q2/Q3 pairs plus a positive-hit/no-latency-gain boundary case.
-  - Mechanically extracted the existing TASK-C-01 results into `shared_evidence/phase1/task_c_01/` without invoking an evaluator or rerunning the mechanism suite.
-  - Verified all eight legality rows exactly, the paired Q2/Q3 plans and values, the boundary warning, and the official script/config SHA-256 values.
-  - Shared the two necessary existing raw records to `Google Drive / 04_Results / Phase1 / TASK-C-01 /` under the same shared parent as `TASK-B-01`; copied files were read back with matching SHA-256 values.
+  - Added an acceptance audit that distinguishes controlled same-plan mechanism comparisons from redesigned-plan comparisons.
+  - Required the same case, input, config, core allocation, and plan hash for Q1↔Q2 and Q2↔Q3 mechanism claims.
+  - Added consistency checks for Makespan, logical added COPY traffic, Q3 Cache-hit bytes/rate, and physical DDR traffic.
+  - Added explicit FAIL cases for plan-hash mismatch and impossible physical-DDR metrics, plus WARN cases for Cache hits without a Makespan gain and for redesigned-plan comparisons.
+  - Fixed direct startup of `src/evaluate/a_metric_audit.py` outside package mode and covered it with a subprocess test.
+  - Built the six-row acceptance matrix from accepted TASK-C-01 evidence and falsifiable mutations; all expected verdicts matched.
+  - Ran exactly one new official minimal-graph check through the unmodified Q1/Q2/Q3 evaluators; did not rerun TASK-C-01 or start a formal/full experiment.
+  - Shared the two necessary raw records to `Google Drive / 04_Results / Phase2 / TASK-C-02 /` and read them back with matching SHA-256 values.
 - Key Findings:
-  - Q1 = PASS. Independent legality verdicts matched official verdicts 8/8, including missing mapping, duplicate integer key alias, duplicate sgid scheduling, reversed dependency order, contracted subgraph cycle, dependency-plus-Task-order cycle, and expanded global execution cycle.
-  - Q2 = PASS. On the controlled same-core pair, Q1 two-Task Makespan 800 and scheduled COPY 30000 bytes became Q2 merged-Task Makespan 400 and scheduled COPY 12000 bytes; added COPY fell 18000 to 0 with no spill.
-  - Q3 = PASS with an explicit boundary warning. On the same split-core plan, Q2 Makespan 1200 became Q3 Makespan 1124; Cache hit bytes were 6000, byte hit rate was 1/3, and recomputed physical DDR fell 30000 to 24000 bytes. Official added_copy_bytes stayed 18000 because it is logical scheduled COPY traffic.
-  - A 16-byte version had hit_bytes=16 and hit_rate=1/3 but Makespan stayed 705, so Cache hit > 0 is not sufficient evidence of performance gain.
+  - `same_plan_q1_q2` = PASS and `same_plan_q2_q3` = PASS for the accepted controlled records.
+  - `q3_hit_without_gain` = WARN: positive hit bytes alone do not prove latency benefit.
+  - `mismatched_plan_hash` = FAIL and `anomalous_physical_ddr` = FAIL, demonstrating that the gate is falsifiable.
+  - `redesigned_plan` = WARN with `REDESIGN_ONLY`: a changed plan may be a useful candidate but cannot support a same-plan mechanism claim.
+  - The official minimal graph produced Q1/Q2/Q3 Makespan 3 with zero added COPY; both same-plan pair checks passed.
+  - These checks validate audit behavior and controlled mechanisms only; they do not establish benefit on the formal 100-graph workload.
 - Outputs:
-  - src/evaluate/a_legality.py
-  - src/evaluate/a_metric_audit.py
-  - tests/test_a_legality.py
-  - tests/test_a_metric_audit.py
-  - result/a_validation/official_validation_evidence.json (local, gitignored)
-  - result/a_validation/TASK-C-01_REPORT.md (local, gitignored)
-  - shared_evidence/phase1/task_c_01/README.md
-  - shared_evidence/phase1/task_c_01/evidence_manifest.json
-  - shared_evidence/phase1/task_c_01/legality_matrix.json
-  - shared_evidence/phase1/task_c_01/q2_mechanism.json
-  - shared_evidence/phase1/task_c_01/q3_mechanism.json
-  - shared_evidence/phase1/task_c_01/q3_boundary.json
-  - Google Drive / 04_Results / Phase1 / TASK-C-01 / (L3 raw evidence)
-- Metrics:
-  - LEGALITY = PASS
-  - METRIC AUDIT = PASS
-  - Q2 MECHANISM = PASS
-  - Q3 L2 MECHANISM = PASS
-  - Q3 boundary = WARN (positive hit with unchanged Makespan at 16 bytes)
-  - EVIDENCE SHARED = PASS
-- Blockers: None. The local A题/ official package remains locally excluded and was not committed. TASK-C-01E did not rerun an evaluator or change audit code/tests.
+  - `src/evaluate/a_metric_audit.py`
+  - `tests/test_a_metric_audit.py`
+  - `result/a_validation_prototype/acceptance_matrix.json` (local, gitignored L3 source)
+  - `result/a_validation_prototype/official_minimal_check.json` (local, gitignored L3 source)
+  - `shared_evidence/phase2/task_c_02/README.md`
+  - `shared_evidence/phase2/task_c_02/acceptance_matrix.json`
+  - `shared_evidence/phase2/task_c_02/official_minimal_check.json`
+  - `shared_evidence/phase2/task_c_02/evidence_manifest.json`
+  - `Google Drive / 04_Results / Phase2 / TASK-C-02 /` (L3 raw evidence)
+- Validation:
+  - Acceptance matrix = PASS (6/6 expected verdicts)
+  - Metric audit tests = PASS (12 passed, 2 official tests intentionally skipped without `A_OFFICIAL_ROOT`)
+  - Targeted official minimal test = PASS (1 passed)
+  - Legality regression tests = PASS (8 passed)
+  - `compileall` = PASS
+  - `smoke_test` = PASS
+  - `git diff --check` = PASS
+  - `EVIDENCE SHARED` = PASS
+- Blockers: None.
 - Need Decision:
-  - A should verify `shared_evidence/phase1/task_c_01/evidence_manifest.json`, sample the L2 values against the listed L3 records, and decide formal acceptance of TASK-C-01.
-  - Cache hit rate, logical `added_copy_bytes`, and physical DDR bytes must remain distinct in subsequent work.
-- PR: https://github.com/Asymty/HuaweiCup2026/pull/11 — agent-c/task-c-01e -> main; do not auto-merge.
-- Next Suggestion: A performs the evidence-handoff gate review. Do not start TASK-C-02 before both TASK-B-01E and TASK-C-01E gates pass and Phase 1 is formally accepted.
+  - Codex A should apply the matrix to each prototype candidate and keep mechanism evidence separate from redesigned-plan results.
+  - Codex B should preserve the case/input/config/core/plan identity fields and the separate logical COPY, Cache-hit, physical-DDR, and Makespan fields in runner records.
+- PR: Pending — `agent-c/task-c-02` -> `main`; do not auto-merge.
+- Next Suggestion: Review and merge TASK-C-02 if the acceptance semantics and evidence pass review. Codex C must not start a formal full experiment or another task from this handoff.
