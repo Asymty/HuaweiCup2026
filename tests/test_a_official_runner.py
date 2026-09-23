@@ -20,7 +20,7 @@ class OfficialRunnerTests(unittest.TestCase):
         self.config = self.root / "config.txt"
         self.config.write_text("fixed-config", encoding="utf-8")
         self.plan = self.root / "plan.json"
-        self.plan.write_text("{}", encoding="utf-8")
+        self.plan.write_text('{"node_to_subgraph": {}, "core_schedules": [[], []]}', encoding="utf-8")
 
     def script(self, body):
         (self.code / "multicore_cut_evaluate_problem_1.py").write_text(
@@ -76,6 +76,44 @@ class OfficialRunnerTests(unittest.TestCase):
         record = self.run_case()
         self.assertEqual(record["status"], "output_missing")
         self.assertEqual(record["exit_code"], 0)
+
+    def test_official_fields_pairing_and_budget(self):
+        self.script(
+            "out=pathlib.Path(sys.argv[sys.argv.index('--output')+1])\n"
+            "out.write_text(json.dumps({'makespan': 42, 'per_core_timeline': "
+            "[{'ops': [{'end': 42}]}, {'ops': [{'end': 31}]}], "
+            "'data_movement_bytes': {'scheduled_copy_bytes': 30, "
+            "'original_graph_copy_bytes': 5, 'partition_added_copy_bytes': 20, "
+            "'spill_added_copy_bytes': 5}, 'cache_stats': "
+            "{'hit_bytes': 7, 'miss_bytes': 13}}))\n"
+        )
+        ledger = self.root / "budget.json"
+        args = (self.graph, self.config, self.code, "1", 2, self.root / "runs", 2)
+        first = run_evaluation(*args, plan=self.plan, budget_ledger=ledger, max_evaluations=1)
+        second = run_evaluation(*args, plan=self.plan, budget_ledger=ledger, max_evaluations=1)
+        self.assertEqual(first["status"], "success")
+        self.assertEqual(first["partition_added_copy_bytes"], 20)
+        self.assertEqual(first["spill_added_copy_bytes"], 5)
+        self.assertEqual(first["max_op_end"], 42)
+        self.assertTrue(first["max_op_end_matches_makespan"])
+        self.assertEqual(first["total_cache_access_bytes"], 20)
+        self.assertEqual(first["physical_ddr_bytes_diagnostic"], 23)
+        self.assertEqual(second["status"], "budget_exhausted")
+        self.assertEqual(first["pairing_key_sha256"], second["pairing_key_sha256"])
+        self.assertEqual(json.loads(ledger.read_text())["reserved_evaluations"], 1)
+
+    def test_metric_mismatch_and_core_count_guard(self):
+        self.script(
+            "out=pathlib.Path(sys.argv[sys.argv.index('--output')+1])\n"
+            "out.write_text(json.dumps({'makespan': 42, 'per_core_timeline': "
+            "[{'ops': [{'end': 41}]}]}))\n"
+        )
+        record = self.run_case()
+        self.assertEqual(record["status"], "metric_mismatch")
+        self.assertFalse(record["max_op_end_matches_makespan"])
+        self.plan.write_text('{"core_schedules": [[]]}', encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "core_schedules"):
+            self.run_case()
 
 
 if __name__ == "__main__":

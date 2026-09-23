@@ -106,3 +106,18 @@
 - Evidence: PR #13 merged C's corrected shared Drive path. A read both raw C files under the same shared Phase1 parent as B and independently matched sizes and SHA-256 to `shared_evidence/phase1/task_c_01/evidence_manifest.json`; earlier L2 legality and Q2/Q3 controlled values had passed. B's L2/L3 review was recorded in HANDOFF-007.
 - Remaining Risks: Q2 spill offset, Q3 critical-path benefit on formal graphs, optimized-plan evaluator long tails, and direct-path C audit CLI behavior. Controlled examples and Gate samples are not aggregate results.
 - Next Action: A/B/C-02 task dependencies are satisfied. No Phase 2 task, full experiment, paper writing or model freeze was started by this acceptance update.
+
+## HANDOFF-009
+
+- From: Codex B
+- To: Codex A; Codex C
+- Task: TASK-B-02
+- Status: DONE; EVIDENCE SHARED = PASS; A owns formal acceptance.
+- What Changed: Extended the official runner's compact metrics, hash-based Q2/Q3 pairing and persistent invocation budget. Performed only four bounded official calls on case_019/034 with existing plans; no optimization algorithm or 100-graph experiment.
+- Files: `src/evaluate/a_official_runner.py`, `tests/test_a_official_runner.py`, `shared_evidence/phase2/task_b_02/`, `coordination/agent_b_status.md`; ignored raw evidence in `result/a_prototype_runner/**`; this appended handoff.
+- Key Results: case_019 Q2/Q3 Makespan 69684/69643; case_034 719955/718723. All four calls exited 0 within 30 seconds; 4/4 budget reserved. Official partition/spill, max op end, Q3 hit+miss and derived DDR fields matched raw official results. Same graph/config/plan/core pairing keys within each case.
+- Evidence: L2 `shared_evidence/phase2/task_b_02/evidence_manifest.json` and `prototype_records.json`; L3 13 SHA-256 verified raw files in `Google Drive / 04_Results / Phase2 / TASK-B-02 /` (actual mount and paths in manifest). Six runner tests, compileall, smoke test and diff check passed; commands in L2 README.
+- Warnings: These are prototype interface checks with B-01 plans, not optimized or formal aggregate results. Physical DDR is a diagnostic derived from logical scheduled COPY minus Q3 hit bytes. Existing censored singlecore values remain unknown.
+- Open Questions: C independently check paired metric interpretation; A decide future official-call budget and algorithm evaluation policy.
+- Recommended Next Action: A review this evidence and PR for TASK-B-02 acceptance; C audit metrics against raw official JSON. Do not infer 100-graph benefit from the four calls.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/16, `agent-b/task-b-02` → `main`; do not auto-merge.
