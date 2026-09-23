@@ -8,7 +8,7 @@
 - Metrics: A 本机 16 项 A 相关单元测试 PASS（含未修改官方 C 机制套件）；C 受控 legality 8/8 一致，Q2/Q3 对照与 boundary PASS/WARN 如上；B 100 图画像本机可生成，ops 766–38666、median 4223；一次 case_001 Q1 2 核官方 runner 成功且记录哈希。A 未取得 B/C 原有 ignored pilot/validation 全量原始记录，以上仅为抽样复核。
 - Blockers: Phase 1 验收无阻断。C 审计脚本直接路径入口问题及大图 evaluator 长尾仍留待下一阶段处理。
 - Need Decision: HUMAN DECISION REQUIRED = NO；未切换重大路线、未改变官方目标解释，MODEL FREEZE = FALSE。若后续候选原型需高风险成本显著不同的整体路线，再提交队长决策。
-- PR: TASK-A-02 分支待 push 与 PR；先前 Phase 1 PR 已合并。
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/17（`agent-a/task-a-02` → `main`）；先前 Phase 1 PR 已合并。
 - Next Suggestion: B/C 依据 `A_ALGORITHM_DESIGN.md` 分工实施和独立证伪；A 后续只据真实官方结果决定是否采纳或修订路线。B-02 PR #16 另行技术与证据审查，不因本任务自动 ACCEPT。
 - Validation: Phase 1 技术审查分支此前的 `compileall src tests main.py`、`tests/smoke_test.py`、16 项 A 单元测试、C 官方模块套件和 B 小图 runner 均 PASS。本次仅核对现有证据和文档，`git diff --check` 与提交范围在提交前复核；未重跑模型实验。
 

@@ -110,7 +110,7 @@
 - Warnings: Static construction is not a substitute for official Step2/3 and global-cycle checks. Memory/FIFO proxies are uncalibrated; C-01 controlled results and B-01 random-stub runtime are not optimized-plan aggregate evidence.
 - Open Questions: Which route produces legal, budget-feasible plans with better official Makespan and acceptable logical COPY? How often do Q2 spill and Q3 noncritical Cache hits erase predicted gains?
 - Recommended Next Action: B/C use this specification to plan later implementation and independent falsification after their own TASK-B/C-02 handoffs. A reviews their evidence before any route choice. Do not start a full 100-graph experiment or freeze the model from this document.
-- PR: `agent-a/task-a-02` → `main` (URL to be added after push).
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/17（`agent-a/task-a-02` → `main`）。
 
 ## HANDOFF-008
 
