@@ -1,0 +1,53 @@
+{
+  "task_id": "TASK-C-01",
+  "source": "result/a_validation/official_validation_evidence.json#/q2_pair",
+  "status": "PASS",
+  "pairing": {
+    "controlled_graph": "two dependent vector ops sharing one graph input",
+    "tensor_size_bytes": 6000,
+    "same_graph": true,
+    "same_subgraph_mapping": true,
+    "same_core_schedule": true,
+    "node_to_subgraph": {
+      "11": 0,
+      "12": 1
+    },
+    "core_schedules": [
+      [0, 1],
+      []
+    ],
+    "control_evaluator": "Q1",
+    "treatment_evaluator": "Q2",
+    "interpretation": "Q2 merges the two same-core subgraphs into one Task while Q1 keeps two Task boundaries."
+  },
+  "control_q1_multiple_tasks_same_core": {
+    "makespan": 800,
+    "original_graph_copy_bytes": 12000,
+    "scheduled_copy_bytes": 30000,
+    "added_copy_bytes": 18000,
+    "partition_added_copy_bytes": 18000,
+    "spill_added_copy_bytes": 0,
+    "physical_ddr_bytes_recomputed": 30000,
+    "metric_audit": "PASS"
+  },
+  "treatment_q2_merged_task_same_core": {
+    "makespan": 400,
+    "original_graph_copy_bytes": 12000,
+    "scheduled_copy_bytes": 12000,
+    "added_copy_bytes": 0,
+    "partition_added_copy_bytes": 0,
+    "spill_added_copy_bytes": 0,
+    "physical_ddr_bytes_recomputed": 12000,
+    "metric_audit": "PASS"
+  },
+  "treatment_minus_control": {
+    "makespan": -400,
+    "added_copy_bytes": -18000,
+    "physical_ddr_bytes": -18000
+  },
+  "reuse_evidence": {
+    "shared_input_duplicate_read_avoided_bytes": 6000,
+    "intermediate_boundary_copy_avoided_bytes": 12000,
+    "total_logical_ddr_bytes_avoided": 18000
+  }
+}
