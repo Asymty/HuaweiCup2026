@@ -1,12 +1,34 @@
 # Codex C Status
 
-- Current Task:
-- Status: TODO
+- Current Task: TASK-C-01 — independent legality, metric semantics, and Q2/Q3 mechanism validation
+- Status: DONE
 - Completed:
+  - Implemented an independent structural checker for graph/plan coverage, duplicate integer mapping aliases, unique sgid scheduling, contracted subgraph dependencies, same-core order, Q1 Task-order cycles, and expanded execution-graph cycles.
+  - Independently recomputed Makespan, logical added COPY bytes, Q3 byte hit rate, and physical DDR bytes implied by Cache hits.
+  - Compared eight legality cases (one positive, seven negative) against the unmodified official checker/evaluator; all verdicts matched.
+  - Ran controlled official Q1/Q2 and Q2/Q3 pairs plus a positive-hit/no-latency-gain boundary case.
 - Key Findings:
+  - Q1 = PASS. Independent legality verdicts matched official verdicts 8/8, including missing mapping, duplicate integer key alias, duplicate sgid scheduling, reversed dependency order, contracted subgraph cycle, dependency-plus-Task-order cycle, and expanded global execution cycle.
+  - Q2 = PASS. On the controlled same-core pair, Q1 two-Task Makespan 800 and scheduled COPY 30000 bytes became Q2 merged-Task Makespan 400 and scheduled COPY 12000 bytes; added COPY fell 18000 to 0 with no spill.
+  - Q3 = PASS with an explicit boundary warning. On the same split-core plan, Q2 Makespan 1200 became Q3 Makespan 1124; Cache hit bytes were 6000, byte hit rate was 1/3, and recomputed physical DDR fell 30000 to 24000 bytes. Official added_copy_bytes stayed 18000 because it is logical scheduled COPY traffic.
+  - A 16-byte version had hit_bytes=16 and hit_rate=1/3 but Makespan stayed 705, so Cache hit > 0 is not sufficient evidence of performance gain.
 - Outputs:
+  - src/evaluate/a_legality.py
+  - src/evaluate/a_metric_audit.py
+  - tests/test_a_legality.py
+  - tests/test_a_metric_audit.py
+  - result/a_validation/official_validation_evidence.json (local, gitignored)
+  - result/a_validation/TASK-C-01_REPORT.md (local, gitignored)
 - Metrics:
-- Blockers:
+  - LEGALITY = PASS
+  - METRIC AUDIT = PASS
+  - Q2 MECHANISM = PASS
+  - Q3 L2 MECHANISM = PASS
+  - Q3 boundary = WARN (positive hit with unchanged Makespan at 16 bytes)
+- Blockers: None. The local A题/ official package remains untracked and must not be committed.
 - Need Decision:
-- PR:
-- Next Suggestion:
+  - A must accept/revise this handoff and, as TASKS.md owner, change TASK-C-01 from TODO to DONE.
+  - A must distinguish logical added_copy_bytes from Q3 physical DDR bytes and must not infer latency benefit from hit rate alone.
+  - B formal runs must record Makespan, max op end, original/scheduled/added/partition/spill COPY bytes, Q3 hit/miss/total bytes, byte hit rate, recomputed physical DDR bytes, hashes, runtime, exit code, and timeout.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/7 — agent-c/task-c-01 -> main; do not auto-merge.
+- Next Suggestion: A incorporates the legality gates and metric distinctions into the model interface; B adopts the required per-case fields before formal runs.
