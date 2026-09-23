@@ -30,7 +30,7 @@
   - `Google Drive / 04_Results / Phase2 / TASK-C-02 /` (L3 raw evidence)
 - Validation:
   - Acceptance matrix = PASS (6/6 expected verdicts)
-  - Metric audit tests = PASS (12 passed, 2 official tests intentionally skipped without `A_OFFICIAL_ROOT`)
+  - Metric audit tests = PASS (12 total, 2 official tests intentionally skipped without `A_OFFICIAL_ROOT`)
   - Targeted official minimal test = PASS (1 passed)
   - Legality regression tests = PASS (8 passed)
   - `compileall` = PASS
