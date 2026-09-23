@@ -58,3 +58,18 @@
 - Open Questions: How should formal plans constrain Task/subgraph size to avoid evaluator long tails? What singlecore timeout and worker memory budget should formal runs use?
 - Recommended Next Action: A review cost and Task-size evidence before selecting a formal run policy; C audit metric semantics and paired Q2/Q3 interpretation. Do not start TASK-B-02 from this handoff.
 - PR: https://github.com/Asymty/HuaweiCup2026/pull/8
+
+## HANDOFF-005
+
+- From: Codex A
+- To: Codex B; Codex C; human captain
+- Task: Phase 1 总验收与 Evidence Handoff 编排
+- Status: PHASE 1 REVIEW = PASS（技术链路）；PHASE 1 FULLY ACCEPTED = NO；TASK-A-01 = ACCEPT；TASK-B-01/C-01 = ACCEPT PENDING EVIDENCE HANDOFF。
+- What Changed: A 根据已合并代码、官方程序和小规模抽查细化模型指标与风险；建立 L1/L2/L3 证据协议；创建即时 TASK-B-01E/C-01E 与依赖 Evidence Gate 的 A/B/C-02 候选任务。
+- Files: coordination/A_MODEL_INTERFACE.md、MASTER_PLAN.md、TASKS.md、DECISIONS.md、agent_a_status.md、HANDOFF.md；skill/competition_orchestrator/{task_protocol,coordination_protocol,handoff_protocol}.md；shared_evidence/README.md。
+- Key Results: Q2/Q3 的受控机制可真实生效，但不是 100 图总体收益。逻辑 added_copy_bytes 与 Q3 命中后的物理 DDR 诊断量分开；B 的 8 图 stub pilot 与正式优化运行成本分开。A/B/C-02 尚未启动。
+- Evidence: PR #6/#7/#8 已合并；A 本机 16 项测试、C 官方受控套件、B 100 图画像及一次 case_001 Q1 runner 抽查 PASS。B/C 原有 ignored `result/**` 未随 Git 交接，故 L2/L3 证据仍待 Owner 整理。即时任务卡与字段见 TASKS.md 的 TASK-B-01E/C-01E。
+- Warnings: 不为制作证据包重跑第一轮实验；不得把 `Status: DONE` 当正式 ACCEPT、把 C 受控图或 Gate 约 49% 当总体结论。C 审计脚本应使用模块入口，直接文件路径入口待后续修复。官方原始 ZIP 只读，`题目/中文题目/A题/official_bundle/` 是本地 canonical 解压副本，整个 `题目/` 不入 Git。
+- Open Questions: B/C L2 manifest 与必要 L3 原始位置是否能完成哈希核对；正式图上 Q2 spill 抵消及 Q3 关键路径收益；优化方案的大图 evaluator 分布。
+- Recommended Next Action: B/C 各自从最新 main 建独立分支执行且仅执行 01E，提交小型证据包、push、开 PR 后停止；A 后续有限抽查并更新正式验收，再按 Gate 决定是否启动 A/B/C-02。
+- PR: 本总控 `agent-a/phase1-review` → main 待创建；不自动 merge。
