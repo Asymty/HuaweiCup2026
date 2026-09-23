@@ -1,12 +1,15 @@
 # Codex C Status
 
-- Current Task: TASK-C-01 — independent legality, metric semantics, and Q2/Q3 mechanism validation
+- Current Task: TASK-C-01E — portable evidence handoff for TASK-C-01
 - Status: DONE
 - Completed:
   - Implemented an independent structural checker for graph/plan coverage, duplicate integer mapping aliases, unique sgid scheduling, contracted subgraph dependencies, same-core order, Q1 Task-order cycles, and expanded execution-graph cycles.
   - Independently recomputed Makespan, logical added COPY bytes, Q3 byte hit rate, and physical DDR bytes implied by Cache hits.
   - Compared eight legality cases (one positive, seven negative) against the unmodified official checker/evaluator; all verdicts matched.
   - Ran controlled official Q1/Q2 and Q2/Q3 pairs plus a positive-hit/no-latency-gain boundary case.
+  - Mechanically extracted the existing TASK-C-01 results into `shared_evidence/phase1/task_c_01/` without invoking an evaluator or rerunning the mechanism suite.
+  - Verified all eight legality rows exactly, the paired Q2/Q3 plans and values, the boundary warning, and the official script/config SHA-256 values.
+  - Shared the two necessary existing raw records to `Google Drive / 04_Results / Phase1 / TASK-C-01 /`; copied files were read back with matching SHA-256 values.
 - Key Findings:
   - Q1 = PASS. Independent legality verdicts matched official verdicts 8/8, including missing mapping, duplicate integer key alias, duplicate sgid scheduling, reversed dependency order, contracted subgraph cycle, dependency-plus-Task-order cycle, and expanded global execution cycle.
   - Q2 = PASS. On the controlled same-core pair, Q1 two-Task Makespan 800 and scheduled COPY 30000 bytes became Q2 merged-Task Makespan 400 and scheduled COPY 12000 bytes; added COPY fell 18000 to 0 with no spill.
@@ -19,16 +22,23 @@
   - tests/test_a_metric_audit.py
   - result/a_validation/official_validation_evidence.json (local, gitignored)
   - result/a_validation/TASK-C-01_REPORT.md (local, gitignored)
+  - shared_evidence/phase1/task_c_01/README.md
+  - shared_evidence/phase1/task_c_01/evidence_manifest.json
+  - shared_evidence/phase1/task_c_01/legality_matrix.json
+  - shared_evidence/phase1/task_c_01/q2_mechanism.json
+  - shared_evidence/phase1/task_c_01/q3_mechanism.json
+  - shared_evidence/phase1/task_c_01/q3_boundary.json
+  - Google Drive / 04_Results / Phase1 / TASK-C-01 / (L3 raw evidence)
 - Metrics:
   - LEGALITY = PASS
   - METRIC AUDIT = PASS
   - Q2 MECHANISM = PASS
   - Q3 L2 MECHANISM = PASS
   - Q3 boundary = WARN (positive hit with unchanged Makespan at 16 bytes)
-- Blockers: None. The local A题/ official package remains untracked and must not be committed.
+  - EVIDENCE SHARED = PASS
+- Blockers: None. The local A题/ official package remains locally excluded and was not committed. TASK-C-01E did not rerun an evaluator or change audit code/tests.
 - Need Decision:
-  - A must accept/revise this handoff and, as TASKS.md owner, change TASK-C-01 from TODO to DONE.
-  - A must distinguish logical added_copy_bytes from Q3 physical DDR bytes and must not infer latency benefit from hit rate alone.
-  - B formal runs must record Makespan, max op end, original/scheduled/added/partition/spill COPY bytes, Q3 hit/miss/total bytes, byte hit rate, recomputed physical DDR bytes, hashes, runtime, exit code, and timeout.
-- PR: https://github.com/Asymty/HuaweiCup2026/pull/7 — agent-c/task-c-01 -> main; do not auto-merge.
-- Next Suggestion: A incorporates the legality gates and metric distinctions into the model interface; B adopts the required per-case fields before formal runs.
+  - A should verify `shared_evidence/phase1/task_c_01/evidence_manifest.json`, sample the L2 values against the listed L3 records, and decide formal acceptance of TASK-C-01.
+  - Cache hit rate, logical `added_copy_bytes`, and physical DDR bytes must remain distinct in subsequent work.
+- PR: PENDING — agent-c/task-c-01e -> main; do not auto-merge.
+- Next Suggestion: A performs the evidence-handoff gate review. Do not start TASK-C-02 before both TASK-B-01E and TASK-C-01E gates pass and Phase 1 is formally accepted.

@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "task_id": "TASK-C-01",
+  "evidence_task_id": "TASK-C-01E",
+  "phase": "phase1",
+  "evidence_shared": "PASS",
+  "created_at_utc": "2026-09-23T06:07:15Z",
+  "provenance": {
+    "original_task_commit": "3c9ce9227351d94d995667538e1fc39ca76e7077",
+    "merged_main_commit": "2b05cbeafbf3dd8e5d389aa1499a05f9bc32cfd0",
+    "original_task_commit_subject": "test: audit A legality and Q2 Q3 mechanisms",
+    "source_files": [
+      {
+        "path": "result/a_validation/official_validation_evidence.json",
+        "sha256": "a26d60a75f4bd05ce4c2c96f563ab509a16d60aca4cee4f43df0a997b49e2641",
+        "size_bytes": 15543,
+        "last_write_utc": "2026-09-23T02:45:31Z"
+      },
+      {
+        "path": "result/a_validation/TASK-C-01_REPORT.md",
+        "sha256": "d01214c86f6cf95b05302514d62831fb6859138829065ed740c95100cc14d8f1",
+        "size_bytes": 2994,
+        "last_write_utc": "2026-09-23T02:45:31Z"
+      }
+    ]
+  },
+  "official_inputs": {
+    "actual_local_root": "A题/通用神经网络处理器下的多核调度问题  附件/",
+    "read_only": true,
+    "sha256": {
+      "code/stub_multicore_cut_and_schedule.py": "0a3a3b79b5173b466fc05fc8d33b72d11d90b4df78995435853d91c632a35892",
+      "code/multicore_cut_evaluate_problem_1.py": "2095f188a6c24ce3899f156bef21d50dcd87cbd9368488046b1e77e2bf91af3f",
+      "code/multicore_cut_evaluate_problem_2.py": "0b39f84d5ec0a7fba9a4c92a598a9044b97ab79c71393824c1ba130ecfe6c464",
+      "code/multicore_cut_evaluate_problem_3.py": "eab1504dead881f4b67c0f0498cbc2dbbd9039dc3c9d198c6af58773c127eeb0",
+      "data/config.txt": "dcd10de54b23f8366428fb24e828812b1da9549e6eae4a3c3f38604fe5ae77b9"
+    },
+    "hash_verification": "All five local SHA-256 values match official_source_sha256 in the source evidence."
+  },
+  "audit_implementation": {
+    "src/evaluate/a_legality.py": "33146fbce0761c9e91a4f76777195d153815bfcb4dca62baf9e033df1b371e8f",
+    "src/evaluate/a_metric_audit.py": "72ef07f0d8a9f6b41674924f638213261c71489f78f12a35cc1d74ec587d7ad5",
+    "tests/test_a_legality.py": "66e2867d97d91fc6b3a2156259b670bbcc4e4737c230176ce2c4565fdf240bf0",
+    "tests/test_a_metric_audit.py": "302ee20555bd71bcbf738859f27d8bf8259afcf8aa650679a572347603f1624d"
+  },
+  "test_inputs": {
+    "controlled_graph_generator": "src.evaluate.a_metric_audit._mechanism_graph",
+    "tensor_sizes_bytes": [6000, 16],
+    "ops": [10, 11, 12, 13],
+    "same_core_plan": {
+      "node_to_subgraph": {
+        "11": 0,
+        "12": 1
+      },
+      "core_schedules": [
+        [0, 1],
+        []
+      ]
+    },
+    "split_core_plan": {
+      "node_to_subgraph": {
+        "11": 0,
+        "12": 1
+      },
+      "core_schedules": [
+        [0],
+        [1]
+      ]
+    },
+    "capacity_bytes": {
+      "L1": 524288,
+      "UB": 131072,
+      "L2": 1048576
+    },
+    "raw_evaluator_arguments_after_graph_and_plan": {
+      "Q1": [60, "capacity", 1000, 100],
+      "Q2": [60, "capacity", 500],
+      "Q3": [60, "capacity", 500, 1048576, 250]
+    },
+    "legality_cases": [
+      "legal_positive",
+      "missing_mapping",
+      "duplicate_integer_mapping",
+      "duplicate_subgraph_schedule",
+      "dependency_order_violation",
+      "contracted_subgraph_cycle",
+      "task_combination_cycle",
+      "expanded_global_execution_cycle"
+    ]
+  },
+  "generation_and_extraction": {
+    "original_generation_command": ".\\.venv\\Scripts\\python.exe -m src.evaluate.a_metric_audit --official-root \"A题\\通用神经网络处理器下的多核调度问题  附件\" --output-dir result/a_validation",
+    "source_selection": {
+      "legality_matrix.json": "#/legality_parity",
+      "q2_mechanism.json": "#/q2_pair plus same_core plan and evaluator parameters from the merged audit implementation",
+      "q3_mechanism.json": "#/q3_pair/control_q2_split_no_l2, #/q3_pair/treatment_q3_split_with_l2 and #/q3_pair/comparison plus the split_core plan",
+      "q3_boundary.json": "#/q3_pair/tiny_hit_no_latency_gain plus the split_core plan"
+    },
+    "extraction_method": "Mechanical field selection from the existing JSON; no evaluator or mechanism experiment was run for TASK-C-01E.",
+    "mechanical_validation": "PowerShell ConvertFrom-Json compared all 8 legality rows exactly and checked Q2/Q3/boundary values, paired-plan fields, and all five official hashes against local read-only files."
+  },
+  "l2_files": [
+    {
+      "path": "shared_evidence/phase1/task_c_01/README.md",
+      "sha256": "dee3d63ce14f9a3298981e4a7507fbf80cdffc29de7972a58da17e4438eb1087",
+      "size_bytes": 1691
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/legality_matrix.json",
+      "sha256": "29615a317f9d0b43ec2ae361b55ccd20c21ec187334bb8b9baffa1bdafdef433",
+      "size_bytes": 3411
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q2_mechanism.json",
+      "sha256": "8b2932839a6ec6103ec92bcf5c6cfff189804a34c8914d66bc3583195abae3e6",
+      "size_bytes": 1573
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q3_mechanism.json",
+      "sha256": "5876208730478f66f5310b2ffbd35ce9edaabcc11d3896c85cea6d0e98b4ebbe",
+      "size_bytes": 1863
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q3_boundary.json",
+      "sha256": "c88af4cdf4a15968cb4743dc546cf39a7044784c4939cb61150d8fc7b5283370",
+      "size_bytes": 1258
+    }
+  ],
+  "l3": {
+    "provider": "Google Drive for desktop",
+    "logical_path": "Google Drive / 04_Results / Phase1 / TASK-C-01 /",
+    "local_sync_path": "G:/我的云端硬盘/04_Results/Phase1/TASK-C-01/",
+    "folder_url": null,
+    "files": [
+      {
+        "name": "official_validation_evidence.json",
+        "sha256": "a26d60a75f4bd05ce4c2c96f563ab509a16d60aca4cee4f43df0a997b49e2641",
+        "size_bytes": 15543
+      },
+      {
+        "name": "TASK-C-01_REPORT.md",
+        "sha256": "d01214c86f6cf95b05302514d62831fb6859138829065ed740c95100cc14d8f1",
+        "size_bytes": 2994
+      }
+    ],
+    "verification": "Each copied file was read back from the mounted Google Drive path and matched its source SHA-256."
+  },
+  "manifest_note": "This manifest intentionally does not record its own hash or the TASK-C-01E evidence commit to avoid self-reference."
+}

@@ -1,0 +1,108 @@
+{
+  "task_id": "TASK-C-01",
+  "source": "result/a_validation/official_validation_evidence.json#/legality_parity",
+  "status": "PASS",
+  "case_count": 8,
+  "matching_verdicts": 8,
+  "cases": [
+    {
+      "case": "legal_positive",
+      "independent_legal": true,
+      "independent_errors": [],
+      "official_legal": true,
+      "official_error": null,
+      "match": true
+    },
+    {
+      "case": "missing_mapping",
+      "independent_legal": false,
+      "independent_errors": [
+        {
+          "code": "mapping_coverage",
+          "message": "node_to_subgraph must exactly cover non-COPY ops; missing=[12] extra=[]"
+        }
+      ],
+      "official_legal": false,
+      "official_error": "node_to_subgraph must exactly cover non-COPY ops; missing=[12] extra=[]",
+      "match": true
+    },
+    {
+      "case": "duplicate_integer_mapping",
+      "independent_legal": false,
+      "independent_errors": [
+        {
+          "code": "duplicate_mapping",
+          "message": "duplicate integer op id after parsing: 11"
+        }
+      ],
+      "official_legal": false,
+      "official_error": "node_to_subgraph contains duplicate integer op ids",
+      "match": true
+    },
+    {
+      "case": "duplicate_subgraph_schedule",
+      "independent_legal": false,
+      "independent_errors": [
+        {
+          "code": "schedule_coverage",
+          "message": "each subgraph must be scheduled exactly once; duplicate=[1] missing=[] extra=[]"
+        }
+      ],
+      "official_legal": false,
+      "official_error": "core schedules must cover every subgraph exactly once",
+      "match": true
+    },
+    {
+      "case": "dependency_order_violation",
+      "independent_legal": false,
+      "independent_errors": [
+        {
+          "code": "dependency_order",
+          "message": "same-core dependency order violation: 0 -> 1"
+        }
+      ],
+      "official_legal": false,
+      "official_error": "dependency order violation on core 0: 0 -> 1",
+      "match": true
+    },
+    {
+      "case": "contracted_subgraph_cycle",
+      "independent_legal": false,
+      "independent_errors": [
+        {
+          "code": "subgraph_cycle",
+          "message": "contracted subgraph graph contains a cycle: [0, 1, 0]"
+        }
+      ],
+      "official_legal": false,
+      "official_error": "contracted subgraph graph contains a cycle",
+      "match": true
+    },
+    {
+      "case": "task_combination_cycle",
+      "independent_legal": false,
+      "independent_errors": [
+        {
+          "code": "task_schedule_cycle",
+          "message": "dependency plus Task order contains a cycle: [0, 1, 2, 3, 0]"
+        }
+      ],
+      "official_legal": false,
+      "official_error": "task schedule: dependency cycle; 0 -[subgraph dependency]-> 1; 1 -[core 1 task order]-> 2; 2 -[subgraph dependency]-> 3; 3 -[core 0 task order]-> 0",
+      "match": true
+    },
+    {
+      "case": "expanded_global_execution_cycle",
+      "independent_legal": false,
+      "independent_errors": [
+        {
+          "code": "execution_cycle",
+          "message": "expanded execution graph contains a cycle: [(0, 1), (0, 2), (1, 3), (0, 1)]"
+        }
+      ],
+      "official_legal": false,
+      "official_error": "global execution (core, op): dependency cycle; (0, 1) -[local data/memory dependency]-> (0, 2); (0, 2) -[cross-core COPY]-> (1, 3); (1, 3) -[cross-core COPY]-> (0, 1)",
+      "match": true
+    }
+  ]
+}

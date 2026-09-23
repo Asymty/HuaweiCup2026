@@ -1,0 +1,47 @@
+{
+  "task_id": "TASK-C-01",
+  "source": "result/a_validation/official_validation_evidence.json#/q3_pair/tiny_hit_no_latency_gain",
+  "status": "WARN",
+  "pairing": {
+    "tensor_size_bytes": 16,
+    "same_graph": true,
+    "same_plan": true,
+    "node_to_subgraph": {
+      "11": 0,
+      "12": 1
+    },
+    "core_schedules": [
+      [0],
+      [1]
+    ],
+    "control_evaluator": "Q2 without shared L2",
+    "treatment_evaluator": "Q3 with shared read-only L2"
+  },
+  "control_q2_no_l2": {
+    "makespan": 705,
+    "scheduled_copy_bytes": 80,
+    "added_copy_bytes": 48,
+    "physical_ddr_bytes_recomputed": 80
+  },
+  "treatment_q3_with_l2": {
+    "makespan": 705,
+    "scheduled_copy_bytes": 80,
+    "added_copy_bytes": 48,
+    "cache": {
+      "hit_bytes": 16,
+      "miss_bytes": 32,
+      "total_bytes": 48,
+      "copy_in_hits": 1,
+      "copy_in_misses": 2,
+      "byte_hit_rate": 0.3333333333333333,
+      "byte_hit_rate_fraction": "1/3"
+    },
+    "physical_ddr_bytes_recomputed": 64
+  },
+  "treatment_minus_control": {
+    "makespan": 0,
+    "added_copy_bytes": 0,
+    "physical_ddr_bytes": -16
+  },
+  "reason": "A 16-byte Cache hit exists, but both DDR and Cache reads round to one cycle; Cache hit > 0 therefore does not imply lower Makespan."
+}

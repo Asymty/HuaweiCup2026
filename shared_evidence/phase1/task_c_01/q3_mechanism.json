@@ -1,0 +1,57 @@
+{
+  "task_id": "TASK-C-01",
+  "source": "result/a_validation/official_validation_evidence.json#/q3_pair",
+  "status": "PASS",
+  "pairing": {
+    "controlled_graph": "two dependent vector ops sharing one graph input",
+    "tensor_size_bytes": 6000,
+    "same_graph": true,
+    "same_plan": true,
+    "node_to_subgraph": {
+      "11": 0,
+      "12": 1
+    },
+    "core_schedules": [
+      [0],
+      [1]
+    ],
+    "control_evaluator": "Q2 without shared L2",
+    "treatment_evaluator": "Q3 with shared read-only L2",
+    "interpretation": "The identical split-core plan is evaluated under Q2 and Q3 so the delta isolates the shared-L2 mechanism."
+  },
+  "control_q2_split_no_l2": {
+    "makespan": 1200,
+    "original_graph_copy_bytes": 12000,
+    "scheduled_copy_bytes": 30000,
+    "added_copy_bytes": 18000,
+    "partition_added_copy_bytes": 18000,
+    "spill_added_copy_bytes": 0,
+    "physical_ddr_bytes_recomputed": 30000,
+    "metric_audit": "PASS"
+  },
+  "treatment_q3_split_with_l2": {
+    "makespan": 1124,
+    "original_graph_copy_bytes": 12000,
+    "scheduled_copy_bytes": 30000,
+    "added_copy_bytes": 18000,
+    "partition_added_copy_bytes": 18000,
+    "spill_added_copy_bytes": 0,
+    "cache": {
+      "hit_bytes": 6000,
+      "miss_bytes": 12000,
+      "total_bytes": 18000,
+      "copy_in_hits": 1,
+      "copy_in_misses": 2,
+      "byte_hit_rate": 0.3333333333333333,
+      "byte_hit_rate_fraction": "1/3"
+    },
+    "physical_ddr_bytes_recomputed": 24000,
+    "metric_audit": "PASS"
+  },
+  "treatment_minus_control": {
+    "makespan": -76,
+    "added_copy_bytes": 0,
+    "physical_ddr_bytes": -6000
+  },
+  "metric_semantics": "Official added_copy_bytes is logical scheduled COPY traffic and remains 18000; it does not subtract Q3 Cache hit bytes. Physical DDR bytes are independently recomputed as scheduled COPY bytes minus Cache hit bytes."
+}
