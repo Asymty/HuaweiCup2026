@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
 import shutil
@@ -68,17 +69,77 @@ def _metrics(result: dict) -> dict:
     cache = result.get("cache_stats") or {}
     scheduled = movement.get("scheduled_copy_bytes")
     original = movement.get("original_graph_copy_bytes")
+    timeline = result.get("per_core_timeline") or []
+    op_ends = [op["end"] for core in timeline for op in core.get("ops", [])]
+    max_op_end = max(op_ends, default=None)
+    makespan = result.get("makespan")
+    hit = cache.get("hit_bytes")
+    miss = cache.get("miss_bytes")
     return {
-        "makespan": result.get("makespan"),
+        "makespan": makespan,
+        "max_op_end": max_op_end,
+        "max_op_end_matches_makespan": max_op_end == makespan if max_op_end is not None else None,
         "added_copy_bytes": scheduled - original if scheduled is not None and original is not None else None,
         "scheduled_copy_bytes": scheduled,
         "original_graph_copy_bytes": original,
+        "partition_added_copy_bytes": movement.get("partition_added_copy_bytes"),
+        "spill_added_copy_bytes": movement.get("spill_added_copy_bytes"),
         "cache_hit_rate": cache.get("hit_rate"),
-        "cache_hit_bytes": cache.get("hit_bytes"),
-        "cache_miss_bytes": cache.get("miss_bytes"),
+        "cache_hit_bytes": hit,
+        "cache_miss_bytes": miss,
+        "total_cache_access_bytes": hit + miss if hit is not None and miss is not None else None,
+        "physical_ddr_bytes_diagnostic": scheduled - (hit or 0) if scheduled is not None and (hit is not None or not cache) else None,
+        "physical_ddr_derivation": "scheduled_copy_bytes - cache_hit_bytes; Q1/Q2 hit treated as zero" if scheduled is not None and (hit is not None or not cache) else None,
         "cache_hits": cache.get("hits"),
         "cache_accesses": cache.get("accesses"),
     }
+
+
+@contextmanager
+def _budget_lock(path: Path):
+    """Serialize reservations between independent runner processes."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a+b") as lock:
+        lock.seek(0)
+        if lock.read(1) != b"1":
+            lock.seek(0)
+            lock.write(b"1")
+            lock.flush()
+        lock.seek(0)
+        if sys.platform == "win32":
+            import msvcrt
+            msvcrt.locking(lock.fileno(), msvcrt.LK_LOCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            lock.seek(0)
+            if sys.platform == "win32":
+                msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
+
+
+def _reserve_evaluation(ledger: Path, max_calls: int) -> dict:
+    """Reserve one official evaluator invocation before starting it; crashes still spend a slot."""
+    if max_calls < 1:
+        raise ValueError("max_evaluations must be positive")
+    ledger = ledger.resolve()
+    with _budget_lock(ledger.with_suffix(ledger.suffix + ".lock")):
+        state = json.loads(ledger.read_text(encoding="utf-8")) if ledger.exists() else {
+            "max_evaluations": max_calls, "reserved_evaluations": 0,
+        }
+        if state["max_evaluations"] != max_calls:
+            raise ValueError("budget ledger maximum differs from requested maximum")
+        if state["reserved_evaluations"] >= max_calls:
+            return {**state, "reservation_granted": False, "ledger_path": str(ledger)}
+        state["reserved_evaluations"] += 1
+        temporary = ledger.with_name(ledger.name + ".tmp." + uuid.uuid4().hex)
+        temporary.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+        temporary.replace(ledger)
+        return {**state, "reservation_granted": True, "ledger_path": str(ledger)}
 
 
 def run_evaluation(
@@ -87,6 +148,7 @@ def run_evaluation(
     plan: Path | None = None, seed: int = 0,
     min_subgraph_size: int = 50, max_subgraph_size: int = 100,
     python: str = sys.executable,
+    budget_ledger: Path | None = None, max_evaluations: int | None = None,
 ) -> dict:
     """Call the official CLI in an isolated run directory; never evaluate in process."""
     graph, config, official_code = graph.resolve(), config.resolve(), official_code.resolve()
@@ -103,6 +165,13 @@ def run_evaluation(
         raise FileNotFoundError(official_code / "stub_multicore_cut_and_schedule.py")
     if plan is not None and not plan.is_file():
         raise FileNotFoundError(plan)
+    if (budget_ledger is None) != (max_evaluations is None):
+        raise ValueError("budget_ledger and max_evaluations must be supplied together")
+    if plan is not None:
+        with plan.open(encoding="utf-8") as file:
+            provided_plan = json.load(file)
+        if len(provided_plan["core_schedules"]) != core_count:
+            raise ValueError("plan core_schedules length differs from core_count")
 
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ") + "_" + uuid.uuid4().hex[:8]
     run_dir = output_root.resolve() / graph.stem / f"problem_{problem}" / f"cores_{core_count}" / run_id
@@ -152,6 +221,24 @@ def run_evaluation(
     else:
         record["plan_sha256"] = None
 
+    if plan_path:
+        with plan_path.open(encoding="utf-8") as file:
+            generated_plan = json.load(file)
+        if len(generated_plan["core_schedules"]) != core_count:
+            record.update(status="plan_core_count_mismatch", exit_code=None, timed_out=False)
+            _save_record(run_dir, record)
+            return record
+        pair_text = "|".join((record["input_sha256"], record["config_sha256"],
+                              record["plan_sha256"], str(core_count)))
+        record["pairing_key_sha256"] = hashlib.sha256(pair_text.encode("ascii")).hexdigest()
+    if budget_ledger is not None:
+        budget = _reserve_evaluation(budget_ledger, max_evaluations)
+        record["evaluation_budget"] = budget
+        if not budget["reservation_granted"]:
+            record.update(status="budget_exhausted", exit_code=None, timed_out=False)
+            _save_record(run_dir, record)
+            return record
+
     command = [python, str(official_code / SCRIPT[problem]), str(graph)]
     if plan_path:
         command.append(str(plan_path))
@@ -173,7 +260,7 @@ def run_evaluation(
     else:
         try:
             record.update(_metrics(json.loads(result_path.read_text(encoding="utf-8"))))
-            record["status"] = "success"
+            record["status"] = "success" if record["max_op_end_matches_makespan"] is not False else "metric_mismatch"
         except (OSError, ValueError, TypeError) as error:
             record["status"] = "result_parse_failed"
             record["parse_error"] = str(error)
@@ -200,11 +287,14 @@ def main() -> None:
     parser.add_argument("--max-subgraph-size", type=int, default=100)
     parser.add_argument("--timeout", type=float, default=120.0)
     parser.add_argument("--output-root", type=Path, default=Path("result/a_formal_runs"))
+    parser.add_argument("--budget-ledger", type=Path)
+    parser.add_argument("--max-evaluations", type=int)
     args = parser.parse_args()
     record = run_evaluation(
         args.graph, args.config, args.official_code, args.problem, args.cores,
         args.output_root, args.timeout, args.plan, args.seed,
         args.min_subgraph_size, args.max_subgraph_size,
+        budget_ledger=args.budget_ledger, max_evaluations=args.max_evaluations,
     )
     print(json.dumps({key: record.get(key) for key in (
         "case_id", "problem", "core_count", "status", "makespan",

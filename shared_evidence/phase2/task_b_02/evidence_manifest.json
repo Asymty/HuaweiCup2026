@@ -1,0 +1,145 @@
+{
+  "task_id": "TASK-B-02",
+  "status": "EVIDENCE SHARED = PASS",
+  "timestamp_utc": "2026-09-23T06:52:21.029105+00:00",
+  "base_main_commit": "09c198425fe401abdb75d236e4d1bab7ce5e8cfb",
+  "previous_task_commit": "1a1d577",
+  "method": "Extract four existing bounded prototype results and copy selected raw files; no evaluator calls during extraction.",
+  "command": ".\\.venv\\Scripts\\python.exe shared_evidence/phase2/task_b_02/build_evidence.py --drive-root <resolved shared HuaweiCup2026 Drive directory>",
+  "parameters": {
+    "cases": [
+      "case_019",
+      "case_034"
+    ],
+    "problems": [
+      "2",
+      "3"
+    ],
+    "cores": 2,
+    "max_evaluations": 4,
+    "timeout_seconds": 30,
+    "plan_source": "existing B-01 Q2 pilot plan per case"
+  },
+  "budget_ledger": {
+    "source": "result/a_prototype_runner/budget.json",
+    "sha256": "034c126fc2ec70a3d4a2db202a82e60df80078d597c7162130e10129d3f15eed",
+    "max_evaluations": 4,
+    "reserved_evaluations": 4
+  },
+  "official_sources": {
+    "config": {
+      "path": "result/a_formal_runs/official_bundle/data/config.txt",
+      "sha256": "dcd10de54b23f8366428fb24e828812b1da9549e6eae4a3c3f38604fe5ae77b9"
+    },
+    "problem_2": {
+      "path": "result/a_formal_runs/official_bundle/code/multicore_cut_evaluate_problem_2.py",
+      "sha256": "0b39f84d5ec0a7fba9a4c92a598a9044b97ab79c71393824c1ba130ecfe6c464"
+    },
+    "problem_3": {
+      "path": "result/a_formal_runs/official_bundle/code/multicore_cut_evaluate_problem_3.py",
+      "sha256": "eab1504dead881f4b67c0f0498cbc2dbbd9039dc3c9d198c6af58773c127eeb0"
+    }
+  },
+  "l2_files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "README.md",
+      "sha256": "60f649acbf2f888d5253980b387cad5108b5ef481ea3aac0335c4fc6dd7278e6"
+    },
+    {
+      "path": "build_evidence.py",
+      "sha256": "5a822707e35eb30def9ebe3172dc951f25ff00765b884f0b039548ee400264af"
+    },
+    {
+      "path": "prototype_records.json",
+      "sha256": "28732ecffc5607231bf8aae99d2be7dd34a9732f03242946b8c413b922533328"
+    }
+  ],
+  "l3": {
+    "logical_location": "Google Drive / 04_Results / Phase2 / TASK-B-02 /",
+    "mounted_location": "G:\\.shortcut-targets-by-id\\1A2sgFCDpS1YiCptPPK52xN8mek3fY5C5\\HuaweiCup2026\\04_Results\\Phase2\\TASK-B-02",
+    "files": [
+      {
+        "source": "result/a_prototype_runner/case_019/problem_2/cores_2/20260923T065039357240Z_56e606cb/run_record.json",
+        "l3_relative_path": "case_019/problem_2/cores_2/20260923T065039357240Z_56e606cb/run_record.json",
+        "size_bytes": 3801,
+        "sha256": "553a5fe2b3c83120b74590c1c671f7b5c40b80a148f9205fe24cf926ca5a2a21"
+      },
+      {
+        "source": "result/a_prototype_runner/case_019/problem_2/cores_2/20260923T065039357240Z_56e606cb/official_result.json",
+        "l3_relative_path": "case_019/problem_2/cores_2/20260923T065039357240Z_56e606cb/official_result.json",
+        "size_bytes": 223421,
+        "sha256": "3747f1930dbd806eab4ff52036693e8ba67b7c7400151b201752a8923cf8562b"
+      },
+      {
+        "source": "result/a_prototype_runner/case_019/problem_2/cores_2/20260923T065039357240Z_56e606cb/plan.json",
+        "l3_relative_path": "case_019/problem_2/cores_2/20260923T065039357240Z_56e606cb/plan.json",
+        "size_bytes": 10106,
+        "sha256": "a05ee05ca58a6dbf6b5f3ad99a7c2728ddf647d6a005bb65624fd48c97ccad57"
+      },
+      {
+        "source": "result/a_prototype_runner/case_019/problem_3/cores_2/20260923T065039714094Z_fe9c0c72/run_record.json",
+        "l3_relative_path": "case_019/problem_3/cores_2/20260923T065039714094Z_fe9c0c72/run_record.json",
+        "size_bytes": 3818,
+        "sha256": "d14e22173adbbf7a4c6a5bed4c19d52f102d2c3332fce8a499250b51aa3a15b9"
+      },
+      {
+        "source": "result/a_prototype_runner/case_019/problem_3/cores_2/20260923T065039714094Z_fe9c0c72/official_result.json",
+        "l3_relative_path": "case_019/problem_3/cores_2/20260923T065039714094Z_fe9c0c72/official_result.json",
+        "size_bytes": 302903,
+        "sha256": "a80cb4ae007ad69c674ca8eb9278149767370bb9357f90af1b5abcb647d081f2"
+      },
+      {
+        "source": "result/a_prototype_runner/case_019/problem_3/cores_2/20260923T065039714094Z_fe9c0c72/plan.json",
+        "l3_relative_path": "case_019/problem_3/cores_2/20260923T065039714094Z_fe9c0c72/plan.json",
+        "size_bytes": 10106,
+        "sha256": "a05ee05ca58a6dbf6b5f3ad99a7c2728ddf647d6a005bb65624fd48c97ccad57"
+      },
+      {
+        "source": "result/a_prototype_runner/case_034/problem_2/cores_2/20260923T065040059200Z_b6eee549/run_record.json",
+        "l3_relative_path": "case_034/problem_2/cores_2/20260923T065040059200Z_b6eee549/run_record.json",
+        "size_bytes": 3814,
+        "sha256": "60f1f807dd16f8e5b0fa830d048c0358bd5e3da3b70883bb46c4d0e3a8145e4c"
+      },
+      {
+        "source": "result/a_prototype_runner/case_034/problem_2/cores_2/20260923T065040059200Z_b6eee549/official_result.json",
+        "l3_relative_path": "case_034/problem_2/cores_2/20260923T065040059200Z_b6eee549/official_result.json",
+        "size_bytes": 2924407,
+        "sha256": "6d7cb5936fbb0d401a2634ca360409e97b205f81031930ab215767e21d79ca69"
+      },
+      {
+        "source": "result/a_prototype_runner/case_034/problem_2/cores_2/20260923T065040059200Z_b6eee549/plan.json",
+        "l3_relative_path": "case_034/problem_2/cores_2/20260923T065040059200Z_b6eee549/plan.json",
+        "size_bytes": 63232,
+        "sha256": "48476714ff86684d807ddeaf565316a5970f91524285993b364dc5002d504f0b"
+      },
+      {
+        "source": "result/a_prototype_runner/case_034/problem_3/cores_2/20260923T065041991056Z_35f6e111/run_record.json",
+        "l3_relative_path": "case_034/problem_3/cores_2/20260923T065041991056Z_35f6e111/run_record.json",
+        "size_bytes": 3838,
+        "sha256": "c3061cc4ab8817a20593c12bddffa815843ee8973ccecc46dbb143f0be3325da"
+      },
+      {
+        "source": "result/a_prototype_runner/case_034/problem_3/cores_2/20260923T065041991056Z_35f6e111/official_result.json",
+        "l3_relative_path": "case_034/problem_3/cores_2/20260923T065041991056Z_35f6e111/official_result.json",
+        "size_bytes": 4661755,
+        "sha256": "fa2f15f2336f5a339365fae30bfd04dbe34dc0b57813dead23b74ecad3b4b2dc"
+      },
+      {
+        "source": "result/a_prototype_runner/case_034/problem_3/cores_2/20260923T065041991056Z_35f6e111/plan.json",
+        "l3_relative_path": "case_034/problem_3/cores_2/20260923T065041991056Z_35f6e111/plan.json",
+        "size_bytes": 63232,
+        "sha256": "48476714ff86684d807ddeaf565316a5970f91524285993b364dc5002d504f0b"
+      },
+      {
+        "source": "result/a_prototype_runner/budget.json",
+        "l3_relative_path": "budget.json",
+        "size_bytes": 60,
+        "sha256": "034c126fc2ec70a3d4a2db202a82e60df80078d597c7162130e10129d3f15eed"
+      }
+    ]
+  }
+}
