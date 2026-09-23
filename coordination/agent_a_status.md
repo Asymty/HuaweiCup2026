@@ -1,12 +1,13 @@
 # Codex A Status
 
-- Current Task: TASK-A-01（已建卡，尚未开始正式模型形式化）
-- Status: TODO
-- Completed: 已依据人类队长确认初始化 coordination 七文件；DECISION-001 记录正式选题；MASTER_PLAN v1 明确三问接口、指标与 P0 风险；TASK-A-01/B-01/C-01 已建卡。
-- Key Findings: FINAL PROBLEM = A；PHASE = PHASE 1: Problem Formalization；MODEL FREEZE = FALSE。Gate 证明官方链路和可测优化空间，但 Q2/Q3 专属收益与大图计算长尾仍待正式处理。
-- Outputs: coordination/DECISIONS.md；coordination/MASTER_PLAN.md；coordination/TASKS.md；本状态页。Gate 证据在 result/a_feasibility_gate/GATE_REPORT.md（只读参考）。
-- Metrics: 本轮为协作初始化，无新的正式模型或实验指标；Gate 数值不得作为论文正式结论。
-- Blockers: 初始化时 git pull --ff-only origin main 遇到 Recv failure: Connection was reset；需在 push/PR 阶段重试并核对远端 main。
-- Need Decision: 无；人类队长已确认 A 题。后续核心路线切换或 MODEL FREEZE 仍需队长确认。
-- PR: 待创建；初始化分支 agent-a/init-a-coordination。
-- Next Suggestion: 本初始化 PR 合并后，A/B/C 按 TASKS.md 在各自分支同时启动第一轮 P0 任务。B/C 可先读取本分支或 PR 的任务卡；若尚未合并，不要依赖 main 上已有 coordination。
+- Current Task: TASK-A-01
+- Status: DONE
+- Completed: 已完成 coordination/A_MODEL_INTERFACE.md，定义 Graph/Op/Tensor/Subgraph/Task/Core/Schedule 符号及官方 JSON 映射；形式化 Q1/Q2/Q3 的合法性、Makespan、added_copy_bytes、Task/缓存机制和共用接口；TASKS.md 中仅 TASK-A-01 改为 DONE。没有实现复杂算法、启动 Phase 2 或写论文。
+- Key Findings: 选手只提交 node_to_subgraph 与 core_schedules；Q1 每子图一 Task，Q2/Q3 每核一 Task；Q3 无固定 cache line，按逻辑 tensor 的完整 size 做 COPY_IN 命中和 FIFO 容量管理。Q2/Q3 不增加方案 JSON 字段，新增的是官方执行机制及模型中的派生状态。
+- Outputs: coordination/A_MODEL_INTERFACE.md；coordination/TASKS.md（A 状态）；coordination/HANDOFF.md 中向 B/C 的交接。
+- Metrics: 无正式实验指标。按官方题面最小图在内存中调用未修改的 Q1/Q2/Q3 evaluator：三问 Makespan 均为 6 cycles，added_copy_bytes 均为 0，Q3 hit_rate 为 0；仅用于方案接口一致性核验，不作为性能结论。
+- Blockers: 本轮 git pull --ff-only origin main 两次因 Recv failure: Connection was reset 失败；本地 main 与缓存的 origin/main 均为 4f9bcda，远端最新状态尚无法实时确认。提交与推送状态见本分支 Git 记录。
+- Need Decision: 无新的人类决策；MODEL FREEZE = FALSE。Q2/Q3 独立效益和大图成本需 B/C 证据后再处理。
+- PR: 待 push 后创建；分支 agent-a/task-a-01；不得自动合并。
+- Next Suggestion: B 按 TASK-B-01 落地 runner、单核参照、100 图画像与分层 pilot；C 按 TASK-C-01 对官方合法性和 Q2/Q3 专属收益做独立验证。A 不自动开始 TASK-A-02。
+- Validation: .\.venv\Scripts\python.exe -m compileall src tests main.py = PASS；.\.venv\Scripts\python.exe tests\smoke_test.py = PASS；模型文档标题/JSON/LaTeX 块检查 = PASS；官方最小图三问评估 = PASS。未修改官方 evaluator。

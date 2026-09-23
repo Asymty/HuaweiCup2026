@@ -30,5 +30,5 @@
   - A must accept/revise this handoff and, as TASKS.md owner, change TASK-C-01 from TODO to DONE.
   - A must distinguish logical added_copy_bytes from Q3 physical DDR bytes and must not infer latency benefit from hit rate alone.
   - B formal runs must record Makespan, max op end, original/scheduled/added/partition/spill COPY bytes, Q3 hit/miss/total bytes, byte hit rate, recomputed physical DDR bytes, hashes, runtime, exit code, and timeout.
-- PR: PENDING — agent-c/task-c-01 -> main
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/7 — agent-c/task-c-01 -> main; do not auto-merge.
 - Next Suggestion: A incorporates the legality gates and metric distinctions into the model interface; B adopts the required per-case fields before formal runs.
