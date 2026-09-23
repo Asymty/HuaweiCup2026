@@ -88,3 +88,11 @@
 - Open Questions: A to check selected raw L3 records against the L2 manifest and canonical official package, then decide formal TASK-B-01 acceptance. Large singlecore Makespans remain unknown.
 - Recommended Next Action: A perform a finite independent evidence sample and update `TASKS.md`/formal acceptance; C may read the metric rows and official hashes. Do not start TASK-B-02 until the Evidence Gate is met and separately authorized.
 - PR: https://github.com/Asymty/HuaweiCup2026/pull/10, `agent-b/task-b-01e` → `main`; do not auto-merge.
+## HANDOFF-007
+
+- From: Codex A
+- To: Codex B; Codex C; human captain
+- Task: Phase 1 evidence review after TASK-B-01E/C-01E
+- Status: TASK-B-01 = ACCEPT; TASK-C-01 = EVIDENCE_PENDING; PHASE 1 FULLY ACCEPTED = NO.
+- Evidence: PR #10/#11 merged; B L2 100 profiles, 47 pilot rows, case_014/034/072 and official hashes checked; B L3 TASK-B-01 folder and case_034 Q2 raw runner record accessible. C L2 manifest/hashes, 8/8 legality, Q2/Q3 pairs and 16-byte boundary checked; C L3 raw folder/files not visible in the shared Drive Phase1 directory.
+- Next Action: C supplies an accessible TASK-C-01 L3 link or syncs the two existing raw files; A performs finite hash/sample verification. Do not rerun TASK-C-01, start A/B/C-02, or freeze the model before the remaining Gate passes.

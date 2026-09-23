@@ -1,8 +1,8 @@
 # MASTER PLAN v2 — A 题 Phase 1 技术审查
 
 - FINAL PROBLEM = A：通用神经网络处理器下的多核调度问题
-- PHASE = Phase 1 技术审查通过；Evidence Handoff Gate 待完成。Phase 2 算法原型任务已设计，尚未启动。
-- PHASE 1 REVIEW = PASS（技术链路）；PHASE 1 FULLY ACCEPTED = NO（B/C L2/L3 证据待交接）。
+- PHASE = Phase 1 技术审查通过；B 的 Evidence Handoff Gate 已完成，C 的 L3 原始文件待共享定位。Phase 2 算法原型任务已设计，尚未启动。
+- PHASE 1 REVIEW = PASS（技术链路）；PHASE 1 FULLY ACCEPTED = NO（C L3 证据待交接）。
 - MODEL FREEZE = FALSE
 - Model Version: v1.1（依据 B/C 第一轮受控证据修订指标与工程边界；正式算法尚未确定）
 - Decision Authority: 人类队长已确认选题；后续核心路线变更、MODEL FREEZE 和最终提交仍需人类确认。
@@ -60,9 +60,9 @@
 ## Phase 1 验收边界与下阶段门槛
 
 - TASK-A-01：正式 ACCEPT。模型字段、目标、约束与官方题面/代码及 B/C 受控复核一致；本计划与 A_MODEL_INTERFACE.md 已按实际证据细化。
-- TASK-B-01：IMPLEMENTATION = DONE；TECHNICAL REVIEW = PASS_WITH_WARNING；FORMAL ACCEPTANCE = EVIDENCE_PENDING。已合并 runner 单测、小图真实运行和 100 图画像可在 A 本机抽查；原始 8 图 pilot、长尾和并行记录主要为 B 本机 ignored 证据，须交接最小可移植包与必要原始记录后正式 ACCEPT。
-- TASK-C-01：IMPLEMENTATION = DONE；TECHNICAL REVIEW = PASS_WITH_WARNING；FORMAL ACCEPTANCE = EVIDENCE_PENDING。A 本机以未修改官方程序复现 8/8 合法性、Q2/Q3 受控对照和无时延收益边界；C 原始 evidence 仍须按 L2/L3 规则交接。`python src/evaluate/a_metric_audit.py` 直接启动有 `src` 导入路径问题；`python -m src.evaluate.a_metric_audit` 和测试入口可用，该 CLI 问题不改变机制验收结论。
-- Evidence Handoff Gate：B/C 的 TASK-B-01E、TASK-C-01E 只从已有 `result/**` 整理 L2，必要原始结果共享至 `Google Drive / 04_Results / Phase1 / <TASK-ID> /`；不重跑第一轮实验。A 核对 manifest、哈希、摘要和有限关键 case 后，才把 B/C 正式标为 ACCEPT 与 Phase 1 FULLY ACCEPTED = YES。
+- TASK-B-01：IMPLEMENTATION = DONE；TECHNICAL REVIEW = PASS_WITH_WARNING；FORMAL ACCEPTANCE = ACCEPT。PR #10 的 L2 manifest、100 图、47 条 pilot、关键 case 与官方哈希通过 A 抽查；共享 Drive L3 原始 runner 记录可读取。长尾和单核超时仍属后续风险。
+- TASK-C-01：IMPLEMENTATION = DONE；TECHNICAL REVIEW = PASS_WITH_WARNING；FORMAL ACCEPTANCE = EVIDENCE_PENDING。PR #11 的 L2 哈希、8/8 合法性、Q2/Q3 受控对照和边界通过 A 抽查；C 声明的 L3 原始文件尚未在团队共享 Drive 定位。`python src/evaluate/a_metric_audit.py` 直接启动有 `src` 导入路径问题；模块入口和测试可用。
+- Evidence Handoff Gate：B/C 均已从已有 `result/**` 整理 L2，PR #10/#11 已合并；B 的共享 L3 已定位并抽查，C 的 L3 仍待提供可访问链接或同步到团队 `Google Drive / 04_Results / Phase1 / TASK-C-01 /`。不重跑第一轮实验。C 原始文件可读取并抽样核对后，A 再决定其正式 ACCEPT 与 Phase 1 FULLY ACCEPTED。
 - TASK-A-02/B-02/C-02 是下一阶段候选任务卡，均依赖 Evidence Handoff Gate；在 gate 前不执行。不得启动正式 100 图最终实验、MODEL FREEZE 或论文结果包装。
 
 ## P0 风险登记
@@ -74,11 +74,11 @@
 | RISK-003 | Q2 同核复用的独立净收益 | PARTIALLY_RESOLVED | C 受控同方案 Q1/Q2 为 Makespan 800→400、added COPY 18000→0；正式图上的 L1/UB 压力与 spill 抵消仍未知。 |
 | RISK-004 | Q3 shared L2 的独立作用 | PARTIALLY_RESOLVED | C 受控同方案 Q2/Q3 为 1200→1124、命中 6000 bytes；16 bytes 命中案例 705→705。正式图的 FIFO 时序与关键路径收益仍未知。 |
 | RISK-005 | Gate 两例约 49% 改善被错误外推 | RESOLVED（表述边界） | 已明确仅为两例 Gate 抽样；未写作 100 图总体结果。正式总体收益仍需后续实验。 |
-| RISK-006 | 跨 Agent 原始证据只在本机 ignored result/** | OPEN | A 能抽查代码与少量官方调用，不能独立核对 B/C 原始 pilot 全部记录；TASK-B-01E/C-01E 提供 L2、必要 L3 后关闭。 |
+| RISK-006 | 跨 Agent 原始证据可访问性 | OPEN（仅 C） | B 的 L2/L3 已共享并经 A 抽查；C 的 L2 已核对，但其 L3 原始文件在团队共享 Drive 尚不可见，定位后关闭。 |
 
 ## 第一轮里程碑与下一步
 
 - TASK-A-01：统一数学形式化与三问模型/算法接口，供 B 实现、C 验证。
 - TASK-B-01：100 图运行器与规模/结构画像，先代表性 pilot，特别检查 case_014、case_034。
 - TASK-C-01：独立合法性和指标语义核查，给出 Q2/Q3 专属收益验证场景及 PASS / WARN / FAIL。
-- Phase 1 技术链路已通过；完整正式验收仍以 `EVIDENCE SHARED = PASS` 为前提。当前先做 Evidence Handoff Gate，A/B/C 下一阶段候选任务见 TASKS.md。MODEL FREEZE 仍为 FALSE，未经队长确认不得冻结或将 Gate 数值用于正式论文。
+- Phase 1 技术链路已通过；C 的完整正式验收仍以可访问的 L3 原始证据为前提。A/B/C 下一阶段候选任务见 TASKS.md，目前均未启动。MODEL FREEZE 仍为 FALSE，未经队长确认不得冻结或将 Gate 数值用于正式论文。
