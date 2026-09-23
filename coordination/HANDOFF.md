@@ -1,7 +1,6 @@
 # HANDOFF
 
 ## HANDOFF-001
-
 - From: Codex A
 - To: Codex B
 - Task: TASK-A-01
@@ -29,3 +28,18 @@
 - Open Questions: Q2 同核驻留是否带来净效益；Q3 L2 命中何时影响关键路径；哪些风险需要 A 修订模型接口。
 - Recommended Next Action: 按 TASK-C-01 设计缺失 op、重复 sgid、子图/组合执行环等负例；使用同图同核同方案的 Q1/Q2 与 Q2/Q3 成对测试，报告 PASS/WARN/FAIL 和证据路径。若发现差异，先独立复核再反馈 A，不直接改模型主线。
 - PR: agent-a/task-a-01 → main，待网络恢复后推送与创建；不自动 merge。
+
+## HANDOFF-003
+
+- From: Codex C
+- To: Codex A; Codex B
+- Task: TASK-C-01
+- Status: DONE
+- What Changed: Added independent legality and metric audit modules, negative/positive tests, and controlled official Q1/Q2/Q3 mechanism comparisons.
+- Files: src/evaluate/a_legality.py; src/evaluate/a_metric_audit.py; tests/test_a_legality.py; tests/test_a_metric_audit.py; coordination/agent_c_status.md; coordination/HANDOFF.md. Local gitignored evidence is under result/a_validation/.
+- Key Results: LEGALITY=PASS; METRIC AUDIT=PASS; Q2 MECHANISM=PASS; Q3 L2 MECHANISM=PASS; Q3 boundary=WARN. Q2 controlled pair: Makespan 800->400, scheduled COPY 30000->12000, and added COPY 18000->0. Q3 same-plan pair: Makespan 1200->1124, hit_bytes=6000, byte hit rate=1/3, physical DDR 30000->24000, while added_copy_bytes remains 18000. A 16-byte hit case has Makespan 705->705, demonstrating that Cache hit > 0 does not imply lower Makespan.
+- Evidence: result/a_validation/official_validation_evidence.json; result/a_validation/TASK-C-01_REPORT.md; run `python tests/test_a_legality.py` and set A_OFFICIAL_ROOT before `python tests/test_a_metric_audit.py`.
+- Warnings: Controlled synthetic cases prove mechanisms, not performance over 100 official graphs. Q2 merge can be negated by L1/UB pressure and spill. Q3 hit rate is byte-weighted and does not itself prove lower Makespan. Official added_copy_bytes is logical scheduled COPY traffic, not physical DDR bytes, and does not subtract Cache hit bytes.
+- Open Questions: Which formal cases exhibit positive Q3 hit bytes without latency benefit, and how often do Q2 merges trigger spill that offsets saved boundary COPY?
+- Recommended Next Action: A reviews and updates TASK-C-01 in TASKS.md; B records all fields listed in agent_c_status.md and retains same-plan Q2/Q3 pairs.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/7 — agent-c/task-c-01 -> main; do not auto-merge.
