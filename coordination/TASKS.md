@@ -117,7 +117,7 @@ A 主写 MASTER_PLAN/DECISIONS/TASKS 和 A 模型接口；B 主写预处理、�
 
 - Owner: Codex A
 - Priority: P1
-- Status: TODO
+- Status: DONE
 - Depends On: TASK-B-01E、TASK-C-01E 的 L2/L3 Gate 均 PASS；A 将 B/C 第一轮正式 ACCEPT，Phase 1 FULLY ACCEPTED = YES。
 - Goal: 给出可执行、计算预算受控的 Q1/Q2/Q3 候选优化原型规范与统一 PlanSpec，不预设胜出的算法。
 - Context: Q1 以官方 Makespan 为主、added COPY 为次；Q2 需计同核复用与 spill，Q3 需计 FIFO 窗口及关键路径，evaluator 长尾限制搜索次数。
