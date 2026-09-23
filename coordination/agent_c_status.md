@@ -9,7 +9,7 @@
   - Ran controlled official Q1/Q2 and Q2/Q3 pairs plus a positive-hit/no-latency-gain boundary case.
   - Mechanically extracted the existing TASK-C-01 results into `shared_evidence/phase1/task_c_01/` without invoking an evaluator or rerunning the mechanism suite.
   - Verified all eight legality rows exactly, the paired Q2/Q3 plans and values, the boundary warning, and the official script/config SHA-256 values.
-  - Shared the two necessary existing raw records to `Google Drive / 04_Results / Phase1 / TASK-C-01 /`; copied files were read back with matching SHA-256 values.
+  - Shared the two necessary existing raw records to `Google Drive / 04_Results / Phase1 / TASK-C-01 /` under the same shared parent as `TASK-B-01`; copied files were read back with matching SHA-256 values.
 - Key Findings:
   - Q1 = PASS. Independent legality verdicts matched official verdicts 8/8, including missing mapping, duplicate integer key alias, duplicate sgid scheduling, reversed dependency order, contracted subgraph cycle, dependency-plus-Task-order cycle, and expanded global execution cycle.
   - Q2 = PASS. On the controlled same-core pair, Q1 two-Task Makespan 800 and scheduled COPY 30000 bytes became Q2 merged-Task Makespan 400 and scheduled COPY 12000 bytes; added COPY fell 18000 to 0 with no spill.

@@ -126,10 +126,12 @@
     }
   ],
   "l3": {
-    "provider": "Google Drive for desktop",
+    "provider": "Google Drive for desktop shared shortcut target",
     "logical_path": "Google Drive / 04_Results / Phase1 / TASK-C-01 /",
-    "local_sync_path": "G:/我的云端硬盘/04_Results/Phase1/TASK-C-01/",
+    "local_sync_path": "G:/.shortcut-targets-by-id/1A2sgFCDpS1YiCptPPK52xN8mek3fY5C5/HuaweiCup2026/04_Results/Phase1/TASK-C-01/",
     "folder_url": null,
+    "shared_parent_check": "The target is under the same shared Phase1 parent that already contains TASK-B-01.",
+    "shared_location_verified_at_utc": "2026-09-23T06:32:46Z",
     "files": [
       {
         "name": "official_validation_evidence.json",
@@ -142,7 +144,7 @@
         "size_bytes": 2994
       }
     ],
-    "verification": "Each copied file was read back from the mounted Google Drive path and matched its source SHA-256."
+    "verification": "Each copied file was read back from the shared shortcut target and matched its source SHA-256."
   },
   "manifest_note": "This manifest intentionally does not record its own hash or the TASK-C-01E evidence commit to avoid self-reference."
 }
