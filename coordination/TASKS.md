@@ -1,12 +1,12 @@
 # TASKS — Phase 1: Problem Formalization
 
-FINAL PROBLEM = A。以下三个 P0 任务均已就绪，状态为 TODO；三者无相互完成依赖，可在各自独立分支同时开始。共同前提 DECISION-001 已由人类队长确认。任务开始前各 Owner 仍须依 AGENTS.md 同步 main、检查 Git、建立自己的短分支。官方题包和 data/raw/ 只读；Gate 结果仅作参考，不进入正式结果表。
+FINAL PROBLEM = A。三个 P0 任务无相互完成依赖；TASK-A-01 已完成形式化交接，TASK-B-01/C-01 仍为 TODO，可在各自独立分支同时开始。共同前提 DECISION-001 已由人类队长确认。任务开始前各 Owner 仍须依 AGENTS.md 同步 main、检查 Git、建立自己的短分支。官方题包和 data/raw/ 只读；Gate 结果仅作参考，不进入正式结果表。
 
 ## TASK-A-01
 
 - Owner: Codex A
 - Priority: P0
-- Status: TODO
+- Status: DONE
 - Depends On: None；DECISION-001 已满足。B/C 可按官方接口和 MASTER_PLAN v1 同时开工。
 - Goal: 完成 A 题统一数学形式化与 Q1/Q2/Q3 模型及算法接口设计，使 B 能实现、C 能独立验证。本任务不追求最终高级算法。
 - Context: Phase 1；官方 evaluator 是合法性与指标判据。Q1 的双核负载均衡 Gate 结果不能替代 Q2 同核复用或 Q3 L2 创新。
