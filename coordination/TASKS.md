@@ -1,6 +1,6 @@
 # TASKS — Phase 1 Evidence Handoff Gate 与下一阶段候选
 
-FINAL PROBLEM = A；MODEL FREEZE = FALSE。PR #6/#7/#8 已合并。Phase 1 技术链路通过，但 B/C 正式接受仍为 `EVIDENCE_PENDING`，不可写成 Phase 1 fully accepted。当前只授权 TASK-B-01E、TASK-C-01E 整理旧证据；TASK-A-02/B-02/C-02 是已设计的下一阶段任务卡，依赖 Evidence Handoff Gate，暂不启动。共同前提 DECISION-001 已满足。各 Owner 自行同步 main、建立独立短分支。`题目/` 是 Git 本地排除的只读官方来源，canonical 附件相对路径为 `题目/中文题目/A题/official_bundle/`；`result/**` 中的 official_bundle 只是运行副本。
+FINAL PROBLEM = A；MODEL FREEZE = FALSE。PR #6/#7/#8/#10/#11 已合并。Phase 1 技术链路通过；B 已正式 ACCEPT，C 的 L2 核对通过但 L3 仍待定位，故 Phase 1 FULLY ACCEPTED = NO。TASK-A-02/B-02/C-02 仍不得启动。共同前提 DECISION-001 已满足。`题目/` 是 Git 本地排除的只读官方来源，canonical 附件相对路径为 `题目/中文题目/A题/official_bundle/`；`result/**` 中的 official_bundle 只是运行副本。
 
 ## TASK-A-01
 
@@ -29,7 +29,7 @@ FINAL PROBLEM = A；MODEL FREEZE = FALSE。PR #6/#7/#8 已合并。Phase 1 技�
 - Owner: Codex B
 - Priority: P0
 - Status: DONE
-- Formal Acceptance: EVIDENCE_PENDING（实现完成；等待 TASK-B-01E）
+- Formal Acceptance: ACCEPT（TASK-B-01E L2 哈希与汇总、官方来源及共享 L3 原始记录已由 A 抽样核对）
 - Depends On: None；DECISION-001 已满足。可先按官方 JSON/CLI 契约与 MASTER_PLAN v1 建设施；若 A-01 后续细化接口，再对齐而不等待其完成。
 - Goal: 建立正式 100 图实验运行与性能画像基础设施，先做代表性 pilot，定位 evaluator 长尾；不盲跑全部组合。
 - Context: Gate 已证实官方 Q1/Q2/Q3 能跑通小图，但 case_014 的大 Task 超过 300 秒。Gate 两种方案只是参考，不是正式最终算法。
@@ -76,16 +76,16 @@ A 主写 MASTER_PLAN/DECISIONS/TASKS 和 A 模型接口；B 主写预处理、�
 | Task | Implementation | Technical Review | Formal Acceptance | 当前证据边界 |
 | --- | --- | --- | --- | --- |
 | TASK-A-01 | DONE | PASS | ACCEPT | A_MODEL_INTERFACE 与官方题面/代码、B/C 后续受控证据一致，已由 A 细化。 |
-| TASK-B-01 | DONE | PASS_WITH_WARNING | ACCEPT PENDING EVIDENCE HANDOFF | A 抽查已合并 runner/测试、100 图画像及一次官方小图；B 原始 8 图 pilot、长尾/并行记录尚未跨机器交接。 |
-| TASK-C-01 | DONE | PASS_WITH_WARNING | ACCEPT PENDING EVIDENCE HANDOFF | A 用官方包复核 8/8 合法性、Q2/Q3 受控对照；C 原始结果尚未跨机器交接。脚本直接路径启动有 `src` 导入问题，模块入口可运行。 |
+| TASK-B-01 | DONE | PASS_WITH_WARNING | ACCEPT | PR #10 已合并；L2 100 图/47 条 pilot、哈希与关键 case 核对通过；共享 Drive L3 记录可读取。大图和单核超时仍是后续实验风险。 |
+| TASK-C-01 | DONE | PASS_WITH_WARNING | EVIDENCE_PENDING | PR #11 已合并；L2 哈希、8/8 合法性和 Q2/Q3 对照核对通过；声明的 L3 原始文件尚未在团队共享 Drive 中定位，待链接或同步。 |
 
-`Status: DONE` 与正式 `ACCEPT` 分开。证据尚未交接不构成 `REVISE/REJECT`；若 manifest、哈希、数字或关键复现互相矛盾，再依据协议判 `REVISE`。A 收到 01E PR 后只做抽样独立复核，不重做 B/C 第一轮任务。
+`Status: DONE` 与正式 `ACCEPT` 分开。C 的 L3 未定位属于证据待交接，不构成 `REVISE/REJECT`；A 不重做 B/C 第一轮任务。Phase 1 FULLY ACCEPTED = NO，A/B/C-02 依赖仍未满足。
 
 ## TASK-B-01E
 
 - Owner: Codex B
 - Priority: P0
-- Status: TODO
+- Status: DONE；EVIDENCE SHARED = PASS；A REVIEW = ACCEPT
 - Depends On: TASK-B-01 implementation DONE；PR #8 已合并。
 - Goal: 从 B 本机已有 `result/**` 整理 TASK-B-01 的跨机器最小证据包；不重新运行 100 图画像、pilot、singlecore 或并行试验。
 - Context: A 已做代码与局部官方抽查；B 的 8 图 pilot、runtime 估计和 timeout/concurrency 原始记录尚需 L2/L3 交接以完成正式 ACCEPT。
@@ -101,7 +101,7 @@ A 主写 MASTER_PLAN/DECISIONS/TASKS 和 A 模型接口；B 主写预处理、�
 
 - Owner: Codex C
 - Priority: P0
-- Status: TODO
+- Status: DONE（Owner）；L2 REVIEW = PASS；L3 REVIEW = PENDING
 - Depends On: TASK-C-01 implementation DONE；PR #7 已合并。
 - Goal: 从 C 本机已有 `result/a_validation/**` 整理 TASK-C-01 的跨机器最小证据包；不重跑受控机制套件。
 - Context: A 已独立复核技术机制；原始受控结果与哈希尚未形成 Git 管理的可移植 L2 包。

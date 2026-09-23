@@ -28,3 +28,9 @@
 - Evidence: PR #6/#7/#8 已合并；A 本机 16 项 A 相关测试、官方 C 受控机制套件、100 图画像再生成和一次 case_001 Q1 runner 抽查均 PASS。C 受控 Q2 为 Makespan 800→400、added COPY 18000→0；Q3 同方案为 1200→1124、hit 6000 bytes 且 added COPY 不变；16 bytes 命中边界为 705→705。B 状态页记录 8 图 pilot 与 case_014/072 singlecore 90 秒删失，但其原始记录在 B 本机，当前只作部分核验。C 审计文件路径直接启动失败，模块入口与测试可用；留待后续小修。上述受控图和 Gate 两例均不得外推到 100 图。
 - Alternatives Rejected: 不为缺少跨机器证据重跑 B/C 第一轮任务；不把 Owner 状态文字当独立验收；不在证据缺席但技术链路已成立时误判 REJECT/REVISE；不立即启动全量最终实验或 MODEL FREEZE。
 - Affected Tasks: TASK-B-01E、TASK-C-01E 是即时 P0 证据交接；TASK-A-02、TASK-B-02、TASK-C-02 是依赖 Gate 的下一阶段候选任务。A 收到 L2/L3 后只按任务卡有限抽样复核，再更新正式 ACCEPT 与阶段状态。
+## DECISION-003：B 证据 Gate 通过，C 保持 L3 待核对
+
+- Date: 2026-09-23
+- Decision: PR #10/#11 已合并。TASK-B-01E 的 L2/L3 可定位并经有限独立抽查，TASK-B-01 正式 ACCEPT。TASK-C-01E 的 L2 内容及哈希通过，但声明的 L3 原始文件在当前可访问的团队 Drive 未定位；TASK-C-01 仍为 EVIDENCE_PENDING，Phase 1 FULLY ACCEPTED = NO，A/B/C-02 不启动。
+- Evidence: `shared_evidence/phase1/task_b_01/` 的 100 图、47 条 pilot 和共享 Drive 原始 case_034 Q2 记录；`shared_evidence/phase1/task_c_01/` 的 8/8 legality、Q2/Q3 对照及边界。A 仅抽样审核既有证据，未重跑 B/C 第一轮实验。
+- Next: C 提供团队可访问的 L3 链接或同步原有两份文件；A 对照 manifest 抽查后再决定 C 正式验收。MODEL FREEZE = FALSE。
