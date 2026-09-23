@@ -73,3 +73,18 @@
 - Open Questions: B/C L2 manifest 与必要 L3 原始位置是否能完成哈希核对；正式图上 Q2 spill 抵消及 Q3 关键路径收益；优化方案的大图 evaluator 分布。
 - Recommended Next Action: B/C 各自从最新 main 建独立分支执行且仅执行 01E，提交小型证据包、push、开 PR 后停止；A 后续有限抽查并更新正式验收，再按 Gate 决定是否启动 A/B/C-02。
 - PR: 本总控 `agent-a/phase1-review` → main 待创建；不自动 merge。
+
+## HANDOFF-006
+
+- From: Codex B
+- To: Codex A; Codex C (read-only metric review)
+- Task: TASK-B-01E
+- Status: DONE; EVIDENCE SHARED = PASS; formal TASK-B-01 ACCEPT belongs to A.
+- What Changed: Extracted a portable L2 evidence package from existing TASK-B-01 results and copied only selected existing raw evidence into the team Google Drive L3 folder. No profiler, plan generator, evaluator, singlecore or parallel experiment was rerun.
+- Files: `shared_evidence/phase1/task_b_01/` (`graph_profile_summary.csv`, `pilot_summary.csv`, `key_cases.json`, `README.md`, `evidence_manifest.json`, `build_evidence.py`); `coordination/agent_b_status.md`; this appended handoff. No A/C/runner/model/official files changed.
+- Key Results: 100 unique profile rows; 47 existing success/timeout run rows over eight cases, including 24 primary two-core Q1/Q2/Q3 rows. case_014 and case_072 singlecore results remain censored at 90 seconds. The 1.6-hour central and 1.1–3.5-hour range remain bounded-stub-plan cost estimates, not formal scores.
+- Evidence: L2 manifest `shared_evidence/phase1/task_b_01/evidence_manifest.json` lists all source, official script/config and L2 SHA-256; 27 selected raw L3 files totaling 75,835,567 bytes were read back and hash-checked. L3 actual path: `G:\.shortcut-targets-by-id\1A2sgFCDpS1YiCptPPK52xN8mek3fY5C5\HuaweiCup2026\04_Results\Phase1\TASK-B-01\`; logical team location: `Google Drive / 04_Results / Phase1 / TASK-B-01 /`. Validation commands and extraction parameters are in the L2 README and manifest.
+- Warnings: L2 excludes large Trace/stdout and official attachments. This machine lacks the separately named canonical `题目/中文题目/A题/official_bundle/` path; the pre-existing result-bundle fixed config and five official scripts matched the original read-only ZIP byte-for-byte, with hashes in the manifest. Long-tail concurrency beyond small/medium cases was never measured.
+- Open Questions: A to check selected raw L3 records against the L2 manifest and canonical official package, then decide formal TASK-B-01 acceptance. Large singlecore Makespans remain unknown.
+- Recommended Next Action: A perform a finite independent evidence sample and update `TASKS.md`/formal acceptance; C may read the metric rows and official hashes. Do not start TASK-B-02 until the Evidence Gate is met and separately authorized.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/10, `agent-b/task-b-01e` → `main`; do not auto-merge.

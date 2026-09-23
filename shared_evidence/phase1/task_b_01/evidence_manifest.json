@@ -1,0 +1,490 @@
+{
+  "task": "TASK-B-01E",
+  "source_task": "TASK-B-01",
+  "source_task_commit": "1a1d577",
+  "source_code_commit": "93a2b2c",
+  "source_merged_main_commit": "e38202e",
+  "extracted_at_utc": "2026-09-23T05:31:32.274206+00:00",
+  "method": "read-only mechanical extraction from pre-existing profile.json and run_record.json; successful metrics cross-checked against saved official_result.json; selected raw files copied and SHA-256 verified",
+  "command": ".\\.venv\\Scripts\\python.exe shared_evidence/phase1/task_b_01/build_evidence.py --drive-root \"G:\\.shortcut-targets-by-id\\1A2sgFCDpS1YiCptPPK52xN8mek3fY5C5\\HuaweiCup2026\"",
+  "parameters": {
+    "pilot_cases": [
+      "case_019",
+      "case_080",
+      "case_035",
+      "case_034",
+      "case_020",
+      "case_054",
+      "case_072",
+      "case_014"
+    ],
+    "key_cases": [
+      "case_014",
+      "case_034",
+      "case_072"
+    ],
+    "stub_seed": 0,
+    "min_subgraph_size": 50,
+    "max_subgraph_size": 100,
+    "primary_problem_core_count": 2,
+    "source_records_included": 47
+  },
+  "sources": [
+    {
+      "path": "result/a_graph_profile/profile.json",
+      "sha256": "249a1721550bb0cdcd3bddd6a0cdfd758f3cf3e546372105853bbad0a3422b10"
+    },
+    {
+      "path": "result/a_formal_runs/pilot_summary.csv",
+      "sha256": "2b9785dfa985c6ff7c1732ab26c4bf9ea0c8a108680fb576a05373561fcaa685"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_1/cores_2/20260923T025116242707Z_c6b70e53/run_record.json",
+      "sha256": "e860ebe5fe5fa8929a6c822ce1aa79c7c45c35278bb6fdab07fc38da647dfec4"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_1/cores_5/20260923T025408840047Z_fe181d4b/run_record.json",
+      "sha256": "8e45f34611354ab093ada40260a859e852d63d987236147d1e958a0fd4f1df0a"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_2/cores_2/20260923T025154599982Z_11e0cb2f/run_record.json",
+      "sha256": "630f487af97b0dbdd7f5a08408afaa6d020d8d92edf371df937309fbced344a2"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_2/cores_3/20260923T030220684639Z_be771fd1/run_record.json",
+      "sha256": "fb421fcee925a3207811952efca042f31dfa4e3fc50214066d9f298ff4d3e343"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_2/cores_4/20260923T030307558417Z_d650b0ba/run_record.json",
+      "sha256": "c0b08a53e6d62632a4d170fe7befd701bc7ea7b5306f47949229deba79b652f5"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_2/cores_5/20260923T025452803961Z_69988774/run_record.json",
+      "sha256": "d6cc04cfaa376a061040991ca884ef194b30f482844c91264011c3b156f609b8"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_3/cores_2/20260923T025252314074Z_34c95ed0/run_record.json",
+      "sha256": "2a153e6b4e33b4d9e10b38b6a3342149a7188a7cd2129bae69f54837a0b46638"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_3/cores_5/20260923T025532960968Z_a10540bf/run_record.json",
+      "sha256": "d187cfa83deba2b998732ae9c8be6190b996f6859658dc22246ebc6d6f61911f"
+    },
+    {
+      "path": "result/a_formal_runs/case_014/problem_singlecore/cores_1/20260923T025757512734Z_02a8ca60/run_record.json",
+      "sha256": "e13c9f87ceb0998fe4b6de3d74b381f39e4bcf23e66f58fd8fc7840852f97ed5"
+    },
+    {
+      "path": "result/a_formal_runs/case_019/problem_1/cores_2/20260923T024806526399Z_ad6a6362/run_record.json",
+      "sha256": "cc32b82fd04ab637e0d88228d4d1203a3e50ddfbd0a48d7092c5df307ca77e81"
+    },
+    {
+      "path": "result/a_formal_runs/case_019/problem_1/cores_2/20260923T024908602946Z_29d888da/run_record.json",
+      "sha256": "e61f48af3c10a7bf3decf712799ce7c9708229bc583becddf6ea1ec0678120b7"
+    },
+    {
+      "path": "result/a_formal_runs/case_019/problem_1/cores_2/20260923T030049835635Z_1b512a9a/run_record.json",
+      "sha256": "e98e5e9975173c1d1414ec4090b5c5ee147c56194b7a206c843d0520124899d5"
+    },
+    {
+      "path": "result/a_formal_runs/case_019/problem_2/cores_2/20260923T024908975000Z_4ad32fad/run_record.json",
+      "sha256": "63bd8117fcec5baad36ad05392ff1dc270745a3dadf7b3d75d99191b23ed5c6c"
+    },
+    {
+      "path": "result/a_formal_runs/case_019/problem_3/cores_2/20260923T024909268397Z_ef6ec618/run_record.json",
+      "sha256": "74e3061da8ec38aff32cef4d2803d2f957dcc54d976039fb3b47eb13126ad09e"
+    },
+    {
+      "path": "result/a_formal_runs/case_019/problem_singlecore/cores_1/20260923T024759582219Z_e8a80141/run_record.json",
+      "sha256": "0b66ae41948516a4cb6693d94fc0d3d0c2d5197cbaab83ca3e626a0ffa694aef"
+    },
+    {
+      "path": "result/a_formal_runs/case_019/problem_singlecore/cores_1/20260923T024908368687Z_6fd7bc52/run_record.json",
+      "sha256": "7f947be8405686005bdd72a21118b92b5e7a8b76e4b83bfd00fc04938d3b5e05"
+    },
+    {
+      "path": "result/a_formal_runs/case_020/problem_1/cores_2/20260923T025959150816Z_2ddac88d/run_record.json",
+      "sha256": "876d790fa419a3c09ee2fc000a0261fbc7e2f928915757a99a1f1a279b5097ed"
+    },
+    {
+      "path": "result/a_formal_runs/case_020/problem_2/cores_2/20260923T030003138158Z_52a9e23a/run_record.json",
+      "sha256": "5270078dadef95fa5cf247fe93c81905b634d772c1d958b726f9492d6d52d272"
+    },
+    {
+      "path": "result/a_formal_runs/case_020/problem_3/cores_2/20260923T030007293855Z_3e4d56b9/run_record.json",
+      "sha256": "2caf2b4a647a5bb9293e3bbc34e10fc613c5933f76f15165bf3bf0c644a42a8d"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_1/cores_2/20260923T024919738393Z_78f35b72/run_record.json",
+      "sha256": "003978576f90c3a5d8c30762ab2d31a11228bbdac2a34a2beacbb24598497ce9"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_1/cores_2/20260923T030049835635Z_e9a7658f/run_record.json",
+      "sha256": "bbae3b755e42abbcd6f796edb079a77cd238c18d4579387f678b645137a51a07"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_1/cores_3/20260923T030207897252Z_919df03d/run_record.json",
+      "sha256": "52c3dadfd6d3045a3940854fafdf5f860d4ddf30a3901c46eb01c1807f6b7fab"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_1/cores_4/20260923T030214300607Z_6b82af81/run_record.json",
+      "sha256": "28f6edc67ac78d1ee26d2b952b273036b2fdea310c6781bb39b94789da5c2330"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_1/cores_5/20260923T025402098947Z_1e989586/run_record.json",
+      "sha256": "4ce4e628b42c3fb57c332eb517ca08d369ed0d6b8a3802f8110cd759af9c0bf9"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_2/cores_2/20260923T024922136942Z_74716c83/run_record.json",
+      "sha256": "576809fe7a7fef82b573a65e7feeecea2f390495d15cccc345a0945a2b50d093"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_2/cores_3/20260923T030210339836Z_b83779d4/run_record.json",
+      "sha256": "5ce1d172550afcaa214f1c7056bdff9802e12465b07f41704eb8ea37bbfe7537"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_2/cores_4/20260923T030216747103Z_7d24d25d/run_record.json",
+      "sha256": "6acc5a8945b1c70ef1aba68f5121f32dddded11be4e257903e34971172eadec8"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_2/cores_5/20260923T025404686781Z_856fb902/run_record.json",
+      "sha256": "b05a2bcba5fad1c8bf456b1c21a5f25f11c24d5669a598617ce88ec9aed890d9"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_3/cores_2/20260923T024923977365Z_25898cbf/run_record.json",
+      "sha256": "9657fee168e93646a3489957643124369b15ea820acd6d001788e04d70b7c76c"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_3/cores_3/20260923T030212254589Z_c6965a45/run_record.json",
+      "sha256": "2e3424e75213e4b1347309658928e7bc3e77b728acfd3947fa0249685ca598d3"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_3/cores_4/20260923T030218628966Z_3396eb79/run_record.json",
+      "sha256": "9270581847ba79615d32bc4cf8a50e38db817acf1b167b15b70bf5ba8948add9"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_3/cores_5/20260923T025406711132Z_6060c74e/run_record.json",
+      "sha256": "8413201bb0d3fd0f916741fe1a68cebf9ba6b63e8945a07e4fcc7d1aeb9effa1"
+    },
+    {
+      "path": "result/a_formal_runs/case_034/problem_singlecore/cores_1/20260923T024916216017Z_9a7d5dcb/run_record.json",
+      "sha256": "81e9d0cc646233af811600d35695795c760ee90e26ee869beec42a68ecf33f6a"
+    },
+    {
+      "path": "result/a_formal_runs/case_035/problem_1/cores_2/20260923T024912289890Z_deaff42b/run_record.json",
+      "sha256": "26f8c37850917d095dd8151edb6d558e41a39991cba33bd8aac7d436d6df4c73"
+    },
+    {
+      "path": "result/a_formal_runs/case_035/problem_2/cores_2/20260923T024913663022Z_bd727731/run_record.json",
+      "sha256": "1f591e0e77509f24f4315283a4a4d678c52e048f07f8e7af9ae7a08c9e2c20d3"
+    },
+    {
+      "path": "result/a_formal_runs/case_035/problem_3/cores_2/20260923T024914894391Z_eab7f2f8/run_record.json",
+      "sha256": "978fd39550468f3982067f710cd9f057c4f452a4e9563d9a5a50218df3b80281"
+    },
+    {
+      "path": "result/a_formal_runs/case_035/problem_singlecore/cores_1/20260923T024909563664Z_fd8e52f8/run_record.json",
+      "sha256": "c19e3a992772f51edcadd75e20ea79f6b636270b43b2d189cdca8df0cf43c290"
+    },
+    {
+      "path": "result/a_formal_runs/case_054/problem_1/cores_2/20260923T030011729039Z_5d7d28d7/run_record.json",
+      "sha256": "16802f567c6559ecb51f427b140ef644af3a840c0097ee147e3b97fe11df21f1"
+    },
+    {
+      "path": "result/a_formal_runs/case_054/problem_2/cores_2/20260923T030019698251Z_55cbb307/run_record.json",
+      "sha256": "2d8c1319548a60e8dba350aaaf29cc546d7899c0a52829cbb236b45c91be4ac1"
+    },
+    {
+      "path": "result/a_formal_runs/case_054/problem_3/cores_2/20260923T030028227534Z_d818552a/run_record.json",
+      "sha256": "e8372ae7f65f21438ab3b7e8597acd548935177fbfb06ce257956560307cb604"
+    },
+    {
+      "path": "result/a_formal_runs/case_072/problem_1/cores_2/20260923T024937009256Z_d2ceca5c/run_record.json",
+      "sha256": "18535e76fd07a350ec3933a47ce93cebb83a222da24e312a1f81ba8e753c2b5d"
+    },
+    {
+      "path": "result/a_formal_runs/case_072/problem_2/cores_2/20260923T025003427153Z_1ca86852/run_record.json",
+      "sha256": "9a92e1240a3f5b67f2821368a4ff7822c038a4fa94920f080569402cd70b5d81"
+    },
+    {
+      "path": "result/a_formal_runs/case_072/problem_3/cores_2/20260923T025039069818Z_1e6bc17c/run_record.json",
+      "sha256": "8f21a9c31293e994c0fd119548ea8d9509eddba1f63c72abcf11f96d990c93bd"
+    },
+    {
+      "path": "result/a_formal_runs/case_072/problem_singlecore/cores_1/20260923T025627480932Z_cd36dd2c/run_record.json",
+      "sha256": "b16b4ea27232aac06ed2e8ec0c9b17e1f8a21418b6b1a6215ad3e62c8e3f9e3e"
+    },
+    {
+      "path": "result/a_formal_runs/case_080/problem_1/cores_2/20260923T025957170573Z_16d1f07e/run_record.json",
+      "sha256": "9217eb165b89f0fd7093098968f7e046e9b09eca78145a207de4a3090b482083"
+    },
+    {
+      "path": "result/a_formal_runs/case_080/problem_2/cores_2/20260923T025957941269Z_c2029c5b/run_record.json",
+      "sha256": "382aea2e80c48d0256c63a0e20125c9f56ff474a2a8d7bdc5091f877c6dd4ba3"
+    },
+    {
+      "path": "result/a_formal_runs/case_080/problem_3/cores_2/20260923T025958524808Z_d3b3608f/run_record.json",
+      "sha256": "180aa0b6da6334811746adb27af8b6cb1453c96dc5840dc7ac2a46444c9b908c"
+    }
+  ],
+  "official_scripts": [
+    {
+      "path": "result/a_formal_runs/official_bundle/code/multicore_cut_evaluate_problem_1.py",
+      "sha256": "2095f188a6c24ce3899f156bef21d50dcd87cbd9368488046b1e77e2bf91af3f"
+    },
+    {
+      "path": "result/a_formal_runs/official_bundle/code/multicore_cut_evaluate_problem_2.py",
+      "sha256": "0b39f84d5ec0a7fba9a4c92a598a9044b97ab79c71393824c1ba130ecfe6c464"
+    },
+    {
+      "path": "result/a_formal_runs/official_bundle/code/multicore_cut_evaluate_problem_3.py",
+      "sha256": "eab1504dead881f4b67c0f0498cbc2dbbd9039dc3c9d198c6af58773c127eeb0"
+    },
+    {
+      "path": "result/a_formal_runs/official_bundle/code/singlecore_evaluate.py",
+      "sha256": "446b753ee134ef1fec8e052356bb077a2602fbe95572ccd3dddd7928e894b77a"
+    },
+    {
+      "path": "result/a_formal_runs/official_bundle/code/stub_multicore_cut_and_schedule.py",
+      "sha256": "0a3a3b79b5173b466fc05fc8d33b72d11d90b4df78995435853d91c632a35892"
+    }
+  ],
+  "fixed_configs": [
+    {
+      "path": "result/a_formal_runs/official_bundle/data/config.txt",
+      "sha256": "dcd10de54b23f8366428fb24e828812b1da9549e6eae4a3c3f38604fe5ae77b9"
+    }
+  ],
+  "official_archive_verification": {
+    "path": "题目/中文题目/A题/通用神经网络处理器下的多核调度问题  附件.zip",
+    "sha256": "3112331344df7dcf2dcef2ff5f789669c0419e32cefbbc6e2742b9e36d5c43c9",
+    "members": [
+      {
+        "member": "code/multicore_cut_evaluate_problem_1.py",
+        "sha256": "2095f188a6c24ce3899f156bef21d50dcd87cbd9368488046b1e77e2bf91af3f"
+      },
+      {
+        "member": "code/multicore_cut_evaluate_problem_2.py",
+        "sha256": "0b39f84d5ec0a7fba9a4c92a598a9044b97ab79c71393824c1ba130ecfe6c464"
+      },
+      {
+        "member": "code/multicore_cut_evaluate_problem_3.py",
+        "sha256": "eab1504dead881f4b67c0f0498cbc2dbbd9039dc3c9d198c6af58773c127eeb0"
+      },
+      {
+        "member": "code/singlecore_evaluate.py",
+        "sha256": "446b753ee134ef1fec8e052356bb077a2602fbe95572ccd3dddd7928e894b77a"
+      },
+      {
+        "member": "code/stub_multicore_cut_and_schedule.py",
+        "sha256": "0a3a3b79b5173b466fc05fc8d33b72d11d90b4df78995435853d91c632a35892"
+      },
+      {
+        "member": "data/config.txt",
+        "sha256": "dcd10de54b23f8366428fb24e828812b1da9549e6eae4a3c3f38604fe5ae77b9"
+      }
+    ],
+    "all_match": true
+  },
+  "l2_files": [
+    {
+      "path": "graph_profile_summary.csv",
+      "sha256": "ab702ecae08977886160ac6d48e05cedf5eba32894e9d774485302ba7b35be40",
+      "bytes": 8384
+    },
+    {
+      "path": "pilot_summary.csv",
+      "sha256": "d2942952f7962e4816129e2a807e715750616710cd70eb0fcde57dc4a8fd6556",
+      "bytes": 25561
+    },
+    {
+      "path": "key_cases.json",
+      "sha256": "e2386b9cfb49961affe22e373a3a2e387b5f67f489cbee8b48009c6ca7fb7f48",
+      "bytes": 32538
+    },
+    {
+      "path": "README.md",
+      "sha256": "b7d34fce909bad682bf55c0e7b5674d9eec2b07f3ba6149b69e11801b4f86fe0",
+      "bytes": 4327
+    },
+    {
+      "path": "build_evidence.py",
+      "sha256": "971e94df8d5894932de92da5351dfa8f5cdbcfa6b3e83d248036235180d4d5e9",
+      "bytes": 16943
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    }
+  ],
+  "l3": {
+    "logical_location": "Google Drive / 04_Results / Phase1 / TASK-B-01 /",
+    "mounted_location": "G:\\.shortcut-targets-by-id\\1A2sgFCDpS1YiCptPPK52xN8mek3fY5C5\\HuaweiCup2026\\04_Results\\Phase1\\TASK-B-01",
+    "status": "copied_and_hash_verified",
+    "files": [
+      {
+        "source": "result/a_graph_profile/profile.json",
+        "l3_relative_path": "result/a_graph_profile/profile.json",
+        "sha256": "249a1721550bb0cdcd3bddd6a0cdfd758f3cf3e546372105853bbad0a3422b10",
+        "bytes": 54584
+      },
+      {
+        "source": "result/a_formal_runs/case_019/problem_2/cores_2/20260923T024908975000Z_4ad32fad/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_019/problem_2/cores_2/20260923T024908975000Z_4ad32fad/run_record.json",
+        "sha256": "63bd8117fcec5baad36ad05392ff1dc270745a3dadf7b3d75d99191b23ed5c6c",
+        "bytes": 3768
+      },
+      {
+        "source": "result/a_formal_runs/case_080/problem_2/cores_2/20260923T025957941269Z_c2029c5b/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_080/problem_2/cores_2/20260923T025957941269Z_c2029c5b/run_record.json",
+        "sha256": "382aea2e80c48d0256c63a0e20125c9f56ff474a2a8d7bdc5091f877c6dd4ba3",
+        "bytes": 3772
+      },
+      {
+        "source": "result/a_formal_runs/case_035/problem_2/cores_2/20260923T024913663022Z_bd727731/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_035/problem_2/cores_2/20260923T024913663022Z_bd727731/run_record.json",
+        "sha256": "1f591e0e77509f24f4315283a4a4d678c52e048f07f8e7af9ae7a08c9e2c20d3",
+        "bytes": 3769
+      },
+      {
+        "source": "result/a_formal_runs/case_034/problem_1/cores_2/20260923T024919738393Z_78f35b72/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_034/problem_1/cores_2/20260923T024919738393Z_78f35b72/run_record.json",
+        "sha256": "003978576f90c3a5d8c30762ab2d31a11228bbdac2a34a2beacbb24598497ce9",
+        "bytes": 3774
+      },
+      {
+        "source": "result/a_formal_runs/case_034/problem_2/cores_2/20260923T024922136942Z_74716c83/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_034/problem_2/cores_2/20260923T024922136942Z_74716c83/run_record.json",
+        "sha256": "576809fe7a7fef82b573a65e7feeecea2f390495d15cccc345a0945a2b50d093",
+        "bytes": 3774
+      },
+      {
+        "source": "result/a_formal_runs/case_034/problem_3/cores_2/20260923T024923977365Z_25898cbf/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_034/problem_3/cores_2/20260923T024923977365Z_25898cbf/run_record.json",
+        "sha256": "9657fee168e93646a3489957643124369b15ea820acd6d001788e04d70b7c76c",
+        "bytes": 3793
+      },
+      {
+        "source": "result/a_formal_runs/case_034/problem_3/cores_2/20260923T024923977365Z_25898cbf/plan.json",
+        "l3_relative_path": "result/a_formal_runs/case_034/problem_3/cores_2/20260923T024923977365Z_25898cbf/plan.json",
+        "sha256": "48476714ff86684d807ddeaf565316a5970f91524285993b364dc5002d504f0b",
+        "bytes": 63232
+      },
+      {
+        "source": "result/a_formal_runs/case_034/problem_3/cores_2/20260923T024923977365Z_25898cbf/official_result.json",
+        "l3_relative_path": "result/a_formal_runs/case_034/problem_3/cores_2/20260923T024923977365Z_25898cbf/official_result.json",
+        "sha256": "fa2f15f2336f5a339365fae30bfd04dbe34dc0b57813dead23b74ecad3b4b2dc",
+        "bytes": 4661755
+      },
+      {
+        "source": "result/a_formal_runs/case_020/problem_2/cores_2/20260923T030003138158Z_52a9e23a/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_020/problem_2/cores_2/20260923T030003138158Z_52a9e23a/run_record.json",
+        "sha256": "5270078dadef95fa5cf247fe93c81905b634d772c1d958b726f9492d6d52d272",
+        "bytes": 3774
+      },
+      {
+        "source": "result/a_formal_runs/case_054/problem_2/cores_2/20260923T030019698251Z_55cbb307/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_054/problem_2/cores_2/20260923T030019698251Z_55cbb307/run_record.json",
+        "sha256": "2d8c1319548a60e8dba350aaaf29cc546d7899c0a52829cbb236b45c91be4ac1",
+        "bytes": 3770
+      },
+      {
+        "source": "result/a_formal_runs/case_072/problem_1/cores_2/20260923T024937009256Z_d2ceca5c/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_072/problem_1/cores_2/20260923T024937009256Z_d2ceca5c/run_record.json",
+        "sha256": "18535e76fd07a350ec3933a47ce93cebb83a222da24e312a1f81ba8e753c2b5d",
+        "bytes": 3778
+      },
+      {
+        "source": "result/a_formal_runs/case_072/problem_2/cores_2/20260923T025003427153Z_1ca86852/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_072/problem_2/cores_2/20260923T025003427153Z_1ca86852/run_record.json",
+        "sha256": "9a92e1240a3f5b67f2821368a4ff7822c038a4fa94920f080569402cd70b5d81",
+        "bytes": 3777
+      },
+      {
+        "source": "result/a_formal_runs/case_072/problem_2/cores_2/20260923T025003427153Z_1ca86852/plan.json",
+        "l3_relative_path": "result/a_formal_runs/case_072/problem_2/cores_2/20260923T025003427153Z_1ca86852/plan.json",
+        "sha256": "be90c79f666df4012d35ac6a1811dde2358dfbac4345f69c6e0fb7ff88465f19",
+        "bytes": 550751
+      },
+      {
+        "source": "result/a_formal_runs/case_072/problem_2/cores_2/20260923T025003427153Z_1ca86852/official_result.json",
+        "l3_relative_path": "result/a_formal_runs/case_072/problem_2/cores_2/20260923T025003427153Z_1ca86852/official_result.json",
+        "sha256": "080f14e7c50880138352b4896aa6cdb3333511ea6fb4cfac7ac3e1cab7525e3c",
+        "bytes": 29925856
+      },
+      {
+        "source": "result/a_formal_runs/case_072/problem_3/cores_2/20260923T025039069818Z_1e6bc17c/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_072/problem_3/cores_2/20260923T025039069818Z_1e6bc17c/run_record.json",
+        "sha256": "8f21a9c31293e994c0fd119548ea8d9509eddba1f63c72abcf11f96d990c93bd",
+        "bytes": 3802
+      },
+      {
+        "source": "result/a_formal_runs/case_014/problem_1/cores_2/20260923T025116242707Z_c6b70e53/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_014/problem_1/cores_2/20260923T025116242707Z_c6b70e53/run_record.json",
+        "sha256": "e860ebe5fe5fa8929a6c822ce1aa79c7c45c35278bb6fdab07fc38da647dfec4",
+        "bytes": 3777
+      },
+      {
+        "source": "result/a_formal_runs/case_014/problem_2/cores_2/20260923T025154599982Z_11e0cb2f/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_014/problem_2/cores_2/20260923T025154599982Z_11e0cb2f/run_record.json",
+        "sha256": "630f487af97b0dbdd7f5a08408afaa6d020d8d92edf371df937309fbced344a2",
+        "bytes": 3777
+      },
+      {
+        "source": "result/a_formal_runs/case_014/problem_2/cores_2/20260923T025154599982Z_11e0cb2f/plan.json",
+        "l3_relative_path": "result/a_formal_runs/case_014/problem_2/cores_2/20260923T025154599982Z_11e0cb2f/plan.json",
+        "sha256": "960a2ba50e2c98ca017cc9e57b44719018b57feac5b4b23afddbdd4c0fee66a5",
+        "bytes": 665894
+      },
+      {
+        "source": "result/a_formal_runs/case_014/problem_2/cores_2/20260923T025154599982Z_11e0cb2f/official_result.json",
+        "l3_relative_path": "result/a_formal_runs/case_014/problem_2/cores_2/20260923T025154599982Z_11e0cb2f/official_result.json",
+        "sha256": "eb1e977a91fa401f09676e28b9a8a829f57485a9fb8ed657d102980ff5f7fb95",
+        "bytes": 38477972
+      },
+      {
+        "source": "result/a_formal_runs/case_014/problem_3/cores_2/20260923T025252314074Z_34c95ed0/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_014/problem_3/cores_2/20260923T025252314074Z_34c95ed0/run_record.json",
+        "sha256": "2a153e6b4e33b4d9e10b38b6a3342149a7188a7cd2129bae69f54837a0b46638",
+        "bytes": 3798
+      },
+      {
+        "source": "result/a_formal_runs/case_014/problem_singlecore/cores_1/20260923T025757512734Z_02a8ca60/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_014/problem_singlecore/cores_1/20260923T025757512734Z_02a8ca60/run_record.json",
+        "sha256": "e13c9f87ceb0998fe4b6de3d74b381f39e4bcf23e66f58fd8fc7840852f97ed5",
+        "bytes": 2599
+      },
+      {
+        "source": "result/a_formal_runs/case_034/problem_singlecore/cores_1/20260923T024916216017Z_9a7d5dcb/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_034/problem_singlecore/cores_1/20260923T024916216017Z_9a7d5dcb/run_record.json",
+        "sha256": "81e9d0cc646233af811600d35695795c760ee90e26ee869beec42a68ecf33f6a",
+        "bytes": 2864
+      },
+      {
+        "source": "result/a_formal_runs/case_034/problem_singlecore/cores_1/20260923T024916216017Z_9a7d5dcb/official_result.json",
+        "l3_relative_path": "result/a_formal_runs/case_034/problem_singlecore/cores_1/20260923T024916216017Z_9a7d5dcb/official_result.json",
+        "sha256": "1beca6bb982c266bf3545b7cfe56c87d6e3a6c703de88227259a172b2cd8f55d",
+        "bytes": 1367015
+      },
+      {
+        "source": "result/a_formal_runs/case_072/problem_singlecore/cores_1/20260923T025627480932Z_cd36dd2c/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_072/problem_singlecore/cores_1/20260923T025627480932Z_cd36dd2c/run_record.json",
+        "sha256": "b16b4ea27232aac06ed2e8ec0c9b17e1f8a21418b6b1a6215ad3e62c8e3f9e3e",
+        "bytes": 2600
+      },
+      {
+        "source": "result/a_formal_runs/case_019/problem_1/cores_2/20260923T030049835635Z_1b512a9a/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_019/problem_1/cores_2/20260923T030049835635Z_1b512a9a/run_record.json",
+        "sha256": "e98e5e9975173c1d1414ec4090b5c5ee147c56194b7a206c843d0520124899d5",
+        "bytes": 3770
+      },
+      {
+        "source": "result/a_formal_runs/case_034/problem_1/cores_2/20260923T030049835635Z_e9a7658f/run_record.json",
+        "l3_relative_path": "result/a_formal_runs/case_034/problem_1/cores_2/20260923T030049835635Z_e9a7658f/run_record.json",
+        "sha256": "bbae3b755e42abbcd6f796edb079a77cd238c18d4579387f678b645137a51a07",
+        "bytes": 3772
+      }
+    ]
+  }
+}
