@@ -87,4 +87,4 @@
 - Warnings: L2 excludes large Trace/stdout and official attachments. This machine lacks the separately named canonical `题目/中文题目/A题/official_bundle/` path; the pre-existing result-bundle fixed config and five official scripts matched the original read-only ZIP byte-for-byte, with hashes in the manifest. Long-tail concurrency beyond small/medium cases was never measured.
 - Open Questions: A to check selected raw L3 records against the L2 manifest and canonical official package, then decide formal TASK-B-01 acceptance. Large singlecore Makespans remain unknown.
 - Recommended Next Action: A perform a finite independent evidence sample and update `TASKS.md`/formal acceptance; C may read the metric rows and official hashes. Do not start TASK-B-02 until the Evidence Gate is met and separately authorized.
-- PR: pending creation, `agent-b/task-b-01e` → `main`; do not auto-merge.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/10, `agent-b/task-b-01e` → `main`; do not auto-merge.
