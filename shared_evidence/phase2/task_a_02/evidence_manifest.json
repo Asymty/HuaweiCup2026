@@ -1,0 +1,180 @@
+{
+  "task_id": "TASK-A-02",
+  "owner": "Codex A",
+  "scope": "design specification; no candidate implementation or official evaluation",
+  "source_task_commit": "0130de9",
+  "phase1_acceptance_main_commit": "7b0f8a3682d944a21c8b7de0676cbad57ea10ddc",
+  "source_main_commit": "09c198425fe401abdb75d236e4d1bab7ce5e8cfb",
+  "generated_at_utc": "2026-09-23T06:57:39.991287+00:00",
+  "method": "Read official package and merged Phase 1 interface/evidence; construct two bounded heuristic specifications and manually audit each task-card criterion. No evaluator, profiler, candidate generator or training invocation.",
+  "reproduction_commands": [
+    "git diff --check",
+    "python -m json.tool shared_evidence/phase2/task_a_02/review_matrix.json",
+    "verify SHA-256 with CRLF-to-LF normalization for Git text and raw bytes for official files"
+  ],
+  "parameters": {
+    "candidate_block_max_ops": 64,
+    "affinity_microblock_max_ops": 32,
+    "q2_memory_soft_fraction": 0.8,
+    "affinity_load_guard": 1.25,
+    "pilot_graphs": [
+      "case_019",
+      "case_034"
+    ],
+    "pilot_core_counts_staged": [
+      2,
+      4,
+      3,
+      5
+    ],
+    "pilot_max_official_calls": 72,
+    "actual_official_calls": 0
+  },
+  "source_files": [
+    {
+      "path": "coordination/A_MODEL_INTERFACE.md",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "5ae65474ce222441a967a46e5bb335b38e8e9ffbdd0d8bc543024768e3ffa9ad",
+      "bytes_hashed": 26123
+    },
+    {
+      "path": "shared_evidence/phase1/task_b_01/README.md",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "b7d34fce909bad682bf55c0e7b5674d9eec2b07f3ba6149b69e11801b4f86fe0",
+      "bytes_hashed": 4327
+    },
+    {
+      "path": "shared_evidence/phase1/task_b_01/graph_profile_summary.csv",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "ab702ecae08977886160ac6d48e05cedf5eba32894e9d774485302ba7b35be40",
+      "bytes_hashed": 8384
+    },
+    {
+      "path": "shared_evidence/phase1/task_b_01/pilot_summary.csv",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "d2942952f7962e4816129e2a807e715750616710cd70eb0fcde57dc4a8fd6556",
+      "bytes_hashed": 25561
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/README.md",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "dee3d63ce14f9a3298981e4a7507fbf80cdffc29de7972a58da17e4438eb1087",
+      "bytes_hashed": 1691
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q2_mechanism.json",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "8b2932839a6ec6103ec92bcf5c6cfff189804a34c8914d66bc3583195abae3e6",
+      "bytes_hashed": 1573
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q3_mechanism.json",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "5876208730478f66f5310b2ffbd35ce9edaabcc11d3896c85cea6d0e98b4ebbe",
+      "bytes_hashed": 1863
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/q3_boundary.json",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "c88af4cdf4a15968cb4743dc546cf39a7044784c4939cb61150d8fc7b5283370",
+      "bytes_hashed": 1258
+    },
+    {
+      "path": "shared_evidence/phase1/task_c_01/evidence_manifest.json",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "44ba230faaff2a77f209d609d5636b099b40bd29e86f1be9c0d727d2a34ea6e9",
+      "bytes_hashed": 6430
+    },
+    {
+      "path": "题目/中文题目/A题/通用神经网络处理器下的多核调度问题.docx",
+      "hash_mode": "raw_bytes",
+      "sha256": "d03f1d9a39f1fcae23467cc9fd384cbc61e4f13fc71f3567bdf44e1f3bab0b46",
+      "bytes_hashed": 297415
+    },
+    {
+      "path": "题目/中文题目/A题/通用神经网络处理器下的多核调度问题  附件.zip",
+      "hash_mode": "raw_bytes",
+      "sha256": "3112331344df7dcf2dcef2ff5f789669c0419e32cefbbc6e2742b9e36d5c43c9",
+      "bytes_hashed": 15467848
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/README.md",
+      "hash_mode": "raw_bytes",
+      "sha256": "d4aaa99648d10e4a11d1619d14dbf73ff6a8df8fa67c6f138949b2cbc3444775",
+      "bytes_hashed": 5747
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/docs/多核并行模拟执行算法.md",
+      "hash_mode": "raw_bytes",
+      "sha256": "bd7bf4fd5c0080d4e425bdf52b9cfa45e8e1e0c7ed0d2088bd22a017bc84b83d",
+      "bytes_hashed": 10749
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/docs/核内调度算法.md",
+      "hash_mode": "raw_bytes",
+      "sha256": "f08c73566c1ebf24fce080b55ccc94015ea2308c1026d71f9550395865cc3231",
+      "bytes_hashed": 52018
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/data/config.txt",
+      "hash_mode": "raw_bytes",
+      "sha256": "dcd10de54b23f8366428fb24e828812b1da9549e6eae4a3c3f38604fe5ae77b9",
+      "bytes_hashed": 341
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/code/stub_multicore_cut_and_schedule.py",
+      "hash_mode": "raw_bytes",
+      "sha256": "0a3a3b79b5173b466fc05fc8d33b72d11d90b4df78995435853d91c632a35892",
+      "bytes_hashed": 12415
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/code/evaluation_validation.py",
+      "hash_mode": "raw_bytes",
+      "sha256": "103206b8c5c25e37de50cc3193de3989d7c1e01d4a11cc5f509dedd8f9be9a64",
+      "bytes_hashed": 10900
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/code/multicore_cut_evaluate_problem_1.py",
+      "hash_mode": "raw_bytes",
+      "sha256": "2095f188a6c24ce3899f156bef21d50dcd87cbd9368488046b1e77e2bf91af3f",
+      "bytes_hashed": 23213
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/code/multicore_cut_evaluate_problem_2.py",
+      "hash_mode": "raw_bytes",
+      "sha256": "0b39f84d5ec0a7fba9a4c92a598a9044b97ab79c71393824c1ba130ecfe6c464",
+      "bytes_hashed": 26123
+    },
+    {
+      "path": "题目/中文题目/A题/official_bundle/code/multicore_cut_evaluate_problem_3.py",
+      "hash_mode": "raw_bytes",
+      "sha256": "eab1504dead881f4b67c0f0498cbc2dbbd9039dc3c9d198c6af58773c127eeb0",
+      "bytes_hashed": 32112
+    }
+  ],
+  "l2_files": [
+    {
+      "path": "coordination/A_ALGORITHM_DESIGN.md",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "d58e69bc230c797cfb31cff2eabc5a8230ddf5e06f08946fd6e0fde4bf93f3e8",
+      "bytes_hashed": 15837
+    },
+    {
+      "path": "shared_evidence/phase2/task_a_02/README.md",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "1615a53a0ebc374cd6bd3f3aa98f5c515d50d9d856672e3684066bb1a6d75ad5",
+      "bytes_hashed": 1856
+    },
+    {
+      "path": "shared_evidence/phase2/task_a_02/review_matrix.json",
+      "hash_mode": "lf_normalized_text",
+      "sha256": "b1498d2a5d1477ea860a562fab79150940715642edfaa2b49ceaa6c41beeedcc",
+      "bytes_hashed": 2479
+    }
+  ],
+  "l3": {
+    "status": "not_applicable",
+    "reason": "TASK-A-02 created design documents only; no large raw result, Trace, stdout or experimental run exists."
+  },
+  "manifest_note": "The manifest intentionally omits its own hash and the future TASK-A-02 commit to avoid self-reference."
+}
