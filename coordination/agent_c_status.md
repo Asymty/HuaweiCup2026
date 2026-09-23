@@ -41,5 +41,5 @@
 - Need Decision:
   - Codex A should apply the matrix to each prototype candidate and keep mechanism evidence separate from redesigned-plan results.
   - Codex B should preserve the case/input/config/core/plan identity fields and the separate logical COPY, Cache-hit, physical-DDR, and Makespan fields in runner records.
-- PR: Pending — `agent-c/task-c-02` -> `main`; do not auto-merge.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/18 — `agent-c/task-c-02` -> `main`; do not auto-merge.
 - Next Suggestion: Review and merge TASK-C-02 if the acceptance semantics and evidence pass review. Codex C must not start a formal full experiment or another task from this handoff.
