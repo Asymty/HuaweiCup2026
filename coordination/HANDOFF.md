@@ -97,6 +97,21 @@
 - Evidence: PR #10/#11 merged; B L2 100 profiles, 47 pilot rows, case_014/034/072 and official hashes checked; B L3 TASK-B-01 folder and case_034 Q2 raw runner record accessible. C L2 manifest/hashes, 8/8 legality, Q2/Q3 pairs and 16-byte boundary checked; C L3 raw folder/files not visible in the shared Drive Phase1 directory.
 - Next Action: C supplies an accessible TASK-C-01 L3 link or syncs the two existing raw files; A performs finite hash/sample verification. Do not rerun TASK-C-01, start A/B/C-02, or freeze the model before the remaining Gate passes.
 
+## HANDOFF-A02
+
+- From: Codex A
+- To: Codex B; Codex C
+- Task: TASK-A-02
+- Status: DONE; EVIDENCE SHARED = PASS for design evidence; candidate plans and official evaluations = 0.
+- What Changed: Specified two bounded, deterministic partition/assignment routes and a unified PlanSpec; defined Q1/Q2/Q3 proxies, legality gates, paired comparisons, call/time budgets and stop rules. No official source, B/C runner, model implementation, result or paper file changed.
+- Files: `coordination/A_ALGORITHM_DESIGN.md`, `coordination/agent_a_status.md`, A-owned TASKS status, `shared_evidence/phase2/task_a_02/` and this handoff.
+- Key Results: Bounded topological blocks and communication-affinity adjacent merges remain competing untested routes. Initial pilot design is 18 official calls; absolute ceiling is 72 over at most two graphs and N=2–5, subject to a stricter overall wall-time stop. No winner or formal score is claimed.
+- Evidence: `shared_evidence/phase2/task_a_02/evidence_manifest.json`, `README.md` and `review_matrix.json`; 20 source hashes and 3 L2 hashes verified; L3 = not_applicable (documentation-only task). `compileall`, smoke test, JSON/hash checks and `git diff --check` passed.
+- Warnings: Static construction is not a substitute for official Step2/3 and global-cycle checks. Memory/FIFO proxies are uncalibrated; C-01 controlled results and B-01 random-stub runtime are not optimized-plan aggregate evidence.
+- Open Questions: Which route produces legal, budget-feasible plans with better official Makespan and acceptable logical COPY? How often do Q2 spill and Q3 noncritical Cache hits erase predicted gains?
+- Recommended Next Action: B/C use this specification to plan later implementation and independent falsification after their own TASK-B/C-02 handoffs. A reviews their evidence before any route choice. Do not start a full 100-graph experiment or freeze the model from this document.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/17（`agent-a/task-a-02` → `main`）。
+
 ## HANDOFF-008
 
 - From: Codex A
