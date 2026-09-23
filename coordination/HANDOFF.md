@@ -120,4 +120,4 @@
 - Warnings: These are prototype interface checks with B-01 plans, not optimized or formal aggregate results. Physical DDR is a diagnostic derived from logical scheduled COPY minus Q3 hit bytes. Existing censored singlecore values remain unknown.
 - Open Questions: C independently check paired metric interpretation; A decide future official-call budget and algorithm evaluation policy.
 - Recommended Next Action: A review this evidence and PR for TASK-B-02 acceptance; C audit metrics against raw official JSON. Do not infer 100-graph benefit from the four calls.
-- PR: pending creation, `agent-b/task-b-02` → `main`; do not auto-merge.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/16, `agent-b/task-b-02` → `main`; do not auto-merge.

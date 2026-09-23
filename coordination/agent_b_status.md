@@ -45,4 +45,4 @@
 - L3 evidence: 13 raw files (four each of `run_record.json`, `official_result.json`, `plan.json`, plus budget ledger), copied and SHA-256 verified at `Google Drive / 04_Results / Phase2 / TASK-B-02 /`; actual mounted path is in the manifest. Full Trace and stdout/stderr remain local under ignored `result/a_prototype_runner/**`.
 - Reproduction: Four explicit CLI calls and source plan paths are documented in the L2 README; extraction command is `.\\.venv\\Scripts\\python.exe shared_evidence/phase2/task_b_02/build_evidence.py --drive-root <resolved-shared-HuaweiCup2026-Drive-directory>`.
 - Warnings/Open Questions: These two existing plans establish field and budget behavior only; C should independently review the diagnostic DDR interpretation and pairing rows. No claim about optimization quality, formal graph-wide Q2/Q3 gain or tail runtime follows.
-- PR: pending creation on `agent-b/task-b-02` → `main`; do not auto-merge.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/16 (`agent-b/task-b-02` → `main`); do not auto-merge.
