@@ -4,6 +4,8 @@
 
 必填字段：`TASK ID`、`Owner`、`Priority`、`Status`、`Depends On`、`Goal`、`Context`、`Inputs`、`Allowed Files`、`Forbidden Files`、`Expected Outputs`、`Validation`、`Completion Criteria`、`Handoff Target`。
 
+每个正式任务的 `Completion Criteria` 还必须写明 `EVIDENCE SHARED = PASS`：按 [handoff_protocol.md](handoff_protocol.md) 提供可移植的 L2 最小证据包，并在存在大型原始结果时给出 L3 共享位置。`Status: DONE` 表示 Owner 完成实现，不自动等于 A 的正式 `ACCEPT`。A 仅在 `IMPLEMENTATION = DONE`、`VALIDATION = PASS`、`EVIDENCE SHARED = PASS` 且关键抽查一致时正式接受 B/C 任务；证据尚未交接记为 `FORMAL ACCEPTANCE = EVIDENCE_PENDING`，不因本机缺少 gitignored 的 `result/**` 直接判 `REVISE` 或 `REJECT`。
+
 Status 只能是 `TODO`、`IN_PROGRESS`、`BLOCKED`、`DONE`、`SUPERSEDED`。编号采用 `TASK-A-01`、`TASK-B-01`、`TASK-C-01`。
 
 ~~~markdown

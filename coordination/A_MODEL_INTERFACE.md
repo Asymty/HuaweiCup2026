@@ -2,7 +2,7 @@
 
 - 状态：Phase 1 形式化接口；MODEL FREEZE = FALSE；本文不是正式算法或论文结论。
 - 适用题目：A 题《通用神经网络处理器下的多核调度问题》的 Q1/Q2/Q3。
-- 权威来源：题目/中文题目/A题.zip 中的正式题面、附件 README.md、docs/、data/config.txt、code/stub_multicore_cut_and_schedule.py、code/evaluation_validation.py、code/multicore_cut_evaluate_problem_1.py、problem_2.py、problem_3.py、code/schedule_step1/2/3.py。官方评估器的实际判定优先于本文的简化表达。
+- 权威来源：本地 `题目/中文题目/A题/` 的正式题面与原始附件 ZIP；只读解压副本 `official_bundle/` 中的 README.md、docs/、data/config.txt、code/stub_multicore_cut_and_schedule.py、code/evaluation_validation.py、code/multicore_cut_evaluate_problem_1.py、problem_2.py、problem_3.py、code/schedule_step1/2/3.py。原始 ZIP 不修改，整个 `题目/` 不入 Git；`result/**/official_bundle/` 仅是运行副本。官方评估器的实际判定优先于本文的简化表达。
 - 证据边界：result/a_feasibility_gate/GATE_REPORT.md 只证明 Gate 的局部可行性。其两例改善不得用作全部 100 图的总体结论。
 - 术语约定：选手方案只含切图与子图的分核、排序；Task、COPY、spill、逐 Pipe 顺序、L2 状态是官方评估器派生的执行对象。本文用“方案变量”与“派生状态”分别标记，避免让 B 实现不存在的 JSON 字段。
 
@@ -90,6 +90,8 @@ $$
 
 $\Delta B_p$ 对应 added_copy_bytes。B 应保留其分量字段而非自行估算。Q3 的 Cache 命中会改变 COPY_IN 实际走 Cache 读带宽池还是 DDR 带宽池，但不应假设它必然改变上述按调度 COPY 统计的 added_copy_bytes。
 
+**逻辑搬运与物理 DDR 服务分开记录。** 官方 `scheduled_copy_bytes` 与 `added_copy_bytes` 统计调度生成的 COPY 字节，Q3 命中仍保留该条逻辑 COPY。C 的受控同方案 Q2/Q3 对照中，按 `scheduled_copy_bytes - cache_stats.hit_bytes` 重算的 DDR 服务字节为 $30000\to24000$，但两侧 `added_copy_bytes` 均为 $18000$。这个重算量是由官方 COPY 和 Cache 计数导出的诊断指标，不是官方独立评分字段；正式图须保留原始 COPY 分量、Cache 事件与时间线，并核对 COPY 路径后使用，不能把它与 $\Delta B_p$ 混称。
+
 **扩展执行图的共同资源约束。** 若 $S_v,F_v$ 为官方扩展 op 的发射与完成时刻，依赖边 $u\to v$ 至少要求 $S_v\ge F_u$（跨核 COPY 或 Task 激活另加该场景规定的延迟）。对每核 $k$、每条 Pipe $p$ 和任一时刻 $\tau$，同 Pipe 在途 op 数不超过 1；对私有存储的实际驻留集合 $\mathcal R_{k,m}(\tau)$，有
 
 $$
@@ -103,6 +105,8 @@ $$
 正式单核参照 $T_{\mathrm{single}}(G)$ 来自官方 singlecore_evaluate.py，而不是把随机多核示例当作基线。对相同图和 $N$ 核，Q1/Q2 的加速比为 $T_{\mathrm{single}}(G)/T_p(G,P_N)$；Q3 报告相同核数下 $T_2(G,P_N^{\mathrm{noL2}})/T_3(G,P_N^{\mathrm{L2}})$，比较时必须注明两边是否使用同一方案。平均曲线的具体跨用例聚合口径应由 B/C 对照正式题面复核，不能把“平均单核时间 / 平均多核时间”擅自当成“逐例加速比的平均”。
 
 后续目标层次暂定为：先保证合法且能在合理预算内生成、评估，再尽量降低官方 Makespan，同时控制 $\Delta B_p$，最后说明 Q2/Q3 机制的独立贡献。没有官方给出的固定加权和系数，不人为发明总分或宣称全局最优。
+
+**评估成本也是方案筛选约束。** B 的 8 图 × 3 问、2 核 stub pilot 中，case_014 的 Q1/Q2/Q3 分别为 36.58/56.40/56.65 秒；同图与 case_072 的官方 singlecore 在 90 秒限时下未完成。该结果只表明 evaluator 存在图与 Task 结构相关的长尾，不能外推为任意优化方案的耗时。后续算法须限制候选 Task/子图规模、限制官方调用次数，分开记录方案生成和 evaluator 时间，并对超时结果作删失记录；120 秒多核、600 秒大 Task/单核仅是待验证的工程预算建议。
 
 
 ## 4. Q1：场景 A 的切图与多核 Task 调度
@@ -148,6 +152,8 @@ $$
 
 **Q2 专属验证命题。** 需选择存在“跨子图、同核心、可复用 tensor”的合法方案，在**同一图、同一 $N$、同一 JSON 方案**下分别运行 Q1/Q2，核对 Task 边界 COPY、spill、$\Delta B$ 与 $T$。若两问只得到相同负载均衡收益，尚不能宣称 Q2 同核复用有效。NEEDS B/C VALIDATION：哪些正式图与切分粒度能产生独立、稳定的 Q2 收益；复用可能因额外驻留/spill 而净收益为零或为负。
 
+C 的官方受控图已验证这一机制**能够生效**：同图、同核数、同方案的 Q1→Q2 得到 Makespan $800\to400$、scheduled COPY $30000\to12000$、added COPY $18000\to0$，该例无 spill。它不证明正式 100 图的平均净收益；若合并后张量生存期加长并触发 L1/UB spill，节省的边界 COPY 可能被抵消。因此 Q2 候选方案不能机械沿用 Q1 最优切分，应同时考察同核亲和、驻留生存期、容量峰值、spill 与跨核通信。
+
 ## 6. Q3：场景 B 加共享只读 L2
 
 **沿用与新增。** Q3 沿用 Q2 的 $f$、$c(s)$、$\pi_k$、每核一个 Task、同核复用、跨核 COPY 与 500-cycle 同步。方案 JSON 仍无 Cache 控制字段。新增的派生状态为共享 Cache 队列 $Q(\tau)$、COPY_IN 的命中标记 $h_i$、Cache/DDR 两个并发带宽池及访问时间；这些状态由方案影响但由官方模拟生成。
@@ -170,6 +176,8 @@ $$
 
 **Q3 专属验证命题。** 使用同一图、同一 $N$、同一方案成对运行 problem_2（无 L2）和 problem_3（只读 L2），核对 Cache 事件、命中字节、COPY_IN 路径与 $T_2/T_3$。若要比较 Q3 专属方案与 Q2 方案，另做方案变化对照，防止把重新分核产生的收益误归因于 L2。NEEDS B/C VALIDATION：正式用例中是否存在可复现的 $T_3<T_2$，及其与 hit bytes、DDR 争用和关键路径的关系。
 
+C 的受控同方案 Q2→Q3 对照已得到 Makespan $1200\to1124$、命中 $6000$ bytes、字节命中率 $1/3$，而 added COPY 保持 $18000$。另一个 $16$ bytes 命中案例仍为 $705\to705$。这只证明 Cache 可改变传输路径和关键路径时延；正式算法应优先考虑可在 FIFO 驻留窗口内被重复读取、且读取位于关键路径或 DDR 拥堵区间的 tensor，而不是单独最大化 hit rate。FIFO 命中不刷新队列顺序，映射和调度都可能改变后续命中机会；正式图上的独立收益仍待评估。
+
 
 ## 7. 三问共用的数据结构与算法接口契约
 
@@ -183,7 +191,7 @@ $$
 | assign_and_order(graph, f, N, scene) | 图、划分、核数、场景 | 长度 $N$ 的 $\pi_k$，sgid 恰好出现一次，同核顺序与全局依赖兼容 | 后续模型实现 |
 | derive_task_preview(graph, f, $\pi$, scene) | 已有划分、分核、顺序 | Q1 一子图一 Task；Q2/Q3 一核一 Task 的通信与容量代价**预测**，仅用于方案选择 | 后续模型实现；不得代替官方构造 |
 | emit_plan(f, $\pi$) | 已检验的映射与顺序 | **仅** node_to_subgraph、core_schedules 两字段的 UTF-8 JSON；字符串 op id、整数 sgid | B/模型实现，C 核查 |
-| run_official(problem, graph_path, plan_path, config_path) | 原图、方案、原始 config 与隔离输出目录 | 官方 result JSON/Trace/log、退出码、wall time；禁止改评估器 | B 实现 |
+| run_official(problem, graph_path, plan_path, config_path) | 原图、方案、原始 config 与隔离输出目录 | 官方 result JSON/Trace/log、退出码、wall time；记录原始 COPY 分量、Q3 Cache 分量、哈希与超时；禁止改评估器 | B 实现 |
 | audit_result(graph, plan, result) | 原图、方案、官方结果 | 合法性及 Makespan、$\Delta B$、Q3 hit_rate 的独立核查，PASS/WARN/FAIL | C 实现 |
 
 **真实顺序。** 用户侧方案生成是
@@ -203,9 +211,9 @@ Task construction 依赖具体的 core assignment 与 core schedule；因此若�
 | 方案 JSON 恰好两字段；可切分 op 完整映射、sgid 唯一调度 | CONFIRMED | 题面附录 B、官方 derive_multicore_plan；C 仍须覆盖负例 | B/C |
 | 原图题面称二部图，但官方解析兼容直接 Op→Op | CONFIRMED（代码） / NEEDS B/C VALIDATION（100 图出现频率） | evaluation_validation.py 与 schedule_step3.py；B 画像、C 对照解析 | B/C |
 | Q1 每子图一 Task；Q2/Q3 每核一 Task | CONFIRMED | 三个官方 evaluator 的任务构造函数 | B/C |
-| Q2 同核复用会在正式 100 图中带来净 Makespan 或 $\Delta B$ 收益 | UNVERIFIED / NEEDS B/C VALIDATION | Gate 每核仅一个子图，不能区分；需同方案 Q1/Q2 和容量/spill 证据 | B/C |
-| Q3 命中产生独立时延收益 | UNVERIFIED / NEEDS B/C VALIDATION | Gate 有命中但未见 Makespan 下降；需同方案 Q2/Q3、关键路径/带宽解释 | B/C |
-| 特定图规模或 Task 大小能预测 evaluator 长尾 | UNVERIFIED / NEEDS B/C VALIDATION | Gate case_014 说明大 Task 风险，尚无充分规模分层与回归 | B |
+| Q2 同核复用机制可在受控图上降低 Makespan 与 $\Delta B$ | CONFIRMED（受控图） / UNVERIFIED（100 图净收益） | C 同方案 Q1/Q2：$800\to400$，added COPY $18000\to0$；正式图的 spill 抵消率待证 | B/C |
+| Q3 L2 命中可在受控图上产生独立时延收益 | CONFIRMED（受控图） / UNVERIFIED（100 图净收益） | C 同方案 Q2/Q3：$1200\to1124$，hit $6000$ bytes；$16$ bytes 命中无时延收益 | B/C |
+| 图与 Task 结构影响 evaluator 成本 | PARTIALLY CONFIRMED | B 8 图分层 pilot 与单核 90 秒删失支持长尾；完整 runtime 分布及优化方案成本未证 | B |
 | 降低 Makespan 所需的额外搬运 trade-off 可由固定权重刻画 | UNVERIFIED | 官方未给权重；先分别记录 $T_p$ 和 $\Delta B_p$，必要时呈现 Pareto 对照 | B/C |
 | 更高 Cache hit_rate 必然降低 Makespan 或 added_copy_bytes | REJECTED AS ASSUMPTION | 官方两种带宽池、关键路径与逻辑 COPY 统计使此推论不成立 | B/C |
 | Gate 两例约 49% 收益代表全部 100 图 | REJECTED AS ASSUMPTION | Gate 只有 case_001、case_019，且 Q2/Q3 专属收益未验证 | 全员 |
