@@ -40,5 +40,5 @@
 - Need Decision:
   - A should verify `shared_evidence/phase1/task_c_01/evidence_manifest.json`, sample the L2 values against the listed L3 records, and decide formal acceptance of TASK-C-01.
   - Cache hit rate, logical `added_copy_bytes`, and physical DDR bytes must remain distinct in subsequent work.
-- PR: PENDING — agent-c/task-c-01e -> main; do not auto-merge.
+- PR: https://github.com/Asymty/HuaweiCup2026/pull/11 — agent-c/task-c-01e -> main; do not auto-merge.
 - Next Suggestion: A performs the evidence-handoff gate review. Do not start TASK-C-02 before both TASK-B-01E and TASK-C-01E gates pass and Phase 1 is formally accepted.
